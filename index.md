@@ -29,5 +29,3 @@
 ## Interpretation
 
 ## Suumary and Outlook
-(Data Scientist / ML Research)
-
