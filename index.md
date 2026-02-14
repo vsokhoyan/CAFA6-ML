@@ -28,4 +28,4 @@
 
 ## Interpretation
 
-## Suumary and Outlook
+## Summary and Outlook
