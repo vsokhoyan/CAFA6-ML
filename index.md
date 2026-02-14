@@ -24,17 +24,9 @@ This is **not a formal paper** — it’s a reproducible project log and method 
 
 **Figure 1.** Example validation case showing separation of TP/FP after GO-DAG–aware denoising.
 
-Public LB peak: ~0.36x (ensemble + denoising + IA pooling).
-
----
-
 ## Method (high level)
 
 ### Models
-
-- Fine-tuned ProtT5 + ESM2 variants
-- Character-level heads
-- Siamese-style components for name / structure similarity
 
 ### Aggregation
 
@@ -43,18 +35,6 @@ Public LB peak: ~0.36x (ensemble + denoising + IA pooling).
 - selective GO-DAG propagation
 
 ### Denoising strategy
-
-Applied only in FP-rich probability windows:
-
-- suppress low-confidence descendants
-- preserve ancestors
-- aspect-specific thresholds (F / P / C)
-
-Key idea:
-
-> reduce noise where models are weakest, not where they are strongest.
-
----
 
 ## Diagnostics
 
@@ -78,32 +58,7 @@ These plots helped identify FP-heavy regions and tune denoising windows.
 - UniProt-based veto helps in specific mid-confidence ranges but must be tightly gated.
 
 ---
-
-## Code
-
-Main experiments live here:
-
-👉 https://github.com/YOURNAME/YOURREPO
-
-Key components:
-
-- embedding extraction
-- fold aggregation
-- GO-DAG propagation
-- validation diagnostics
-- submission writer
-
----
-
-## Status
-
-Active research project.
-
-Next steps:
-
-- RNA 3D Folding baseline
-- cross-task transfer of denoising heuristics
-- possible methods writeup later
+ possible methods writeup later
 
 ---
 
