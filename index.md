@@ -22,6 +22,12 @@
   <img src="figures/P_tail_Fmax.png" width="33%">
 </div>
 
+<div style="display: flex; gap: 10px;">
+  <img src="figures/P_AP.png" width="33%">
+  <img src="figures/P_base_AP.png" width="33%">
+  <img src="figures/P_tail_AP.png" width="33%">
+</div>
+
 ### Aggregation
 
 ### GO-DAG propagation
