@@ -50,19 +50,9 @@ These plots helped identify FP-heavy regions and tune denoising windows.
 
 ---
 
-## Observations
+## Interpretation
 
-- GO-DAG propagation alone increases recall but also FP.
-- Surgical denoising in low bands improves precision without hurting recall.
-- IA-aware fold pooling beats mean/median aggregation.
-- UniProt-based veto helps in specific mid-confidence ranges but must be tightly gated.
-
----
- possible methods writeup later
-
----
-
-## Contact
+## Suumary and Outlook
 
 Vahe Sokhoyan  
 (Data Scientist / ML Research)
