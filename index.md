@@ -4,6 +4,12 @@
 
 ## Exploratory Data Analysis
 
+<div style="display: flex; gap: 10px;">
+  <img src="figures/fig1.png" width="33%">
+  <img src="figures/fig_style1.png" width="33%">
+  <img src="figures/fig_style2.png" width="33%">
+</div>
+
 ![Main result](figures/fig1.png)
 
 **Figure 1.** 
@@ -14,7 +20,11 @@
 
 ### Training on rare labels vs. main training body
 
-![Style-1 plot](figures/P_base_Fmax.png)
+<div style="display: flex; gap: 10px;">
+  <img src="figures/P_base_Fmax.png" width="33%">
+  <img src="figures/P_base_Fmax.png" width="33%">
+  <img src="figures/P_base_Fmax.png" width="33%">
+</div>
 
 ### Aggregation
 
