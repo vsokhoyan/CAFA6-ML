@@ -14,6 +14,8 @@
 
 ### Training on rare labels vs. main training body
 
+![Style-1 plot](figures/P_base_Fmax.png)
+
 ### Aggregation
 
 ### Denoising strategy
