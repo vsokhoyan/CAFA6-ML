@@ -1,4 +1,6 @@
-# GO-DAG Denoising for Protein Function Prediction (CAFA-6)
+# Protein Function Prediction (CAFA-6)
+
+Methods and diagnostics for ontology-constrained protein function prediction using large protein language models.
 
 *Personal ML project — ongoing*
 
@@ -6,11 +8,6 @@
 
 ## Overview
 
-This page documents a technical exploration of GO-DAG–aware denoising and fold-aware aggregation
-in protein function prediction (CAFA-6).
-
-The goal was to reduce false positives in low–mid probability regions while preserving recall,
-using a combination of:
 
 - transformer-based embeddings (ProtT5 / ESM variants)
 - fold-aware IA pooling
