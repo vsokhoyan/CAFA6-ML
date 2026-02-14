@@ -12,6 +12,8 @@
 
 ### Training models on fixed embeddings vs. end-to-end transformer fine-tuning
 
+![Main result](figures/Diagram_training_v0.png)
+
 ### Training on rare labels vs. main training body
 
 <div style="display: flex; gap: 10px;">
