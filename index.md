@@ -22,6 +22,13 @@
 
 ### Aggregation
 
+### GO-DAG propagation
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/S2_prop_demo_val_C_row27289_GO_0005664.png" width="33%">
+  <img src="figures/S2_prop_demo_val_C_row27289_GO_0005664.png" width="33%">
+</div>
+
 ### Denoising strategy
 
 ## Diagnostics
