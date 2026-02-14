@@ -4,12 +4,6 @@
 
 ## Exploratory Data Analysis
 
-<div style="display: flex; gap: 10px;">
-  <img src="figures/fig1.png" width="33%">
-  <img src="figures/fig_style1.png" width="33%">
-  <img src="figures/fig_style2.png" width="33%">
-</div>
-
 ![Main result](figures/fig1.png)
 
 **Figure 1.** 
