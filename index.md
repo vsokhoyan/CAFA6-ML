@@ -26,6 +26,10 @@
   <img src="figures/P_AP.png" width="33%">
   <img src="figures/P_base_AP.png" width="33%">
   <img src="figures/P_tail_AP.png" width="33%">
+
+  <p align="center"><em>
+Figure 2. Diagnostic comparison across three validation cases.
+</em></p>
 </div>
 
 ### Aggregation
