@@ -12,6 +12,8 @@
 
 ### Training models on fixed embeddings vs. end-to-end transformer fine-tuning
 
+### Training on rare labels vs. main training body
+
 ### Aggregation
 
 ### Denoising strategy
