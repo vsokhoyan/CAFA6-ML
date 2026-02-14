@@ -8,9 +8,9 @@
 
 **Figure 1.** 
 
-## Method (high level)
+### Machine Learning Models
 
-### Models
+### Training models on fixed embeddings vs. end-to-end transformer fine-tuning
 
 ### Aggregation
 
