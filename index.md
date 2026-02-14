@@ -2,11 +2,11 @@
 
 ## Overview
 
-## Key Result
+## Exploratory Data Analysis
 
 ![Main result](figures/fig1.png)
 
-**Figure 1.** Example validation case showing separation of TP/FP after GO-DAG–aware denoising.
+**Figure 1.** 
 
 ## Method (high level)
 
