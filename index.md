@@ -15,9 +15,9 @@
 ### Training on rare labels vs. main training body
 
 <div style="display: flex; gap: 10px;">
+  <img src="figures/P_Fmax.png" width="33%">
   <img src="figures/P_base_Fmax.png" width="33%">
-  <img src="figures/P_base_Fmax.png" width="33%">
-  <img src="figures/P_base_Fmax.png" width="33%">
+  <img src="figures/P_tail_Fmax.png" width="33%">
 </div>
 
 ### Aggregation
