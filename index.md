@@ -10,7 +10,7 @@
 
 ### Machine Learning Models
 
-### Training models on fixed embeddings vs. end-to-end transformer fine-tuning
+### Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning
 
 ![Main result](figures/Diagram_training_v0.png)
 
@@ -20,6 +20,10 @@
   <img src="figures/P_Fmax.png" width="33%">
   <img src="figures/P_base_Fmax.png" width="33%">
   <img src="figures/P_tail_Fmax.png" width="33%">
+  <p align="center"><em>
+Figure 2. Diagnostic comparison across three validation cases for Fmax.
+</em></p>
+
 </div>
 
 <div style="display: flex; gap: 10px;">
@@ -28,11 +32,13 @@
   <img src="figures/P_tail_AP.png" width="33%">
 
   <p align="center"><em>
-Figure 2. Diagnostic comparison across three validation cases.
+Figure 2. Diagnostic comparison across three validation cases for AP. 
 </em></p>
 </div>
 
 ### Aggregation
+
+
 
 ### GO-DAG propagation
 
