@@ -17,8 +17,8 @@ This project presents an end-to-end protein function prediction pipeline develop
 ![Main result](figures/Diagram_training_v0.png)
 
 <div style="display: flex; gap: 10px;">
-  <img src="figures/cafa_architecture.png" width="48%">
-  <img src="figures/cafa_architecture.png" width="33%">
+  <img src="figures/cafa6_architecture.png" width="48%">
+  <img src="figures/cafa6_architecture.png" width="33%">
   <p align="center"><em>
 Figure 2. Neural network architecture.
 </em></p>
