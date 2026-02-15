@@ -43,8 +43,12 @@ Figure 2. Diagnostic comparison across three validation cases for AP.
 ### GO-DAG propagation
 
 <div style="display: flex; gap: 10px;">
-  <img src="figures/S2_prop_demo_val_C_row27289_GO_0005664.png" width="47%">
-  <img src="figures/S2_prop_demo_val_C_row27289_GO_0005664.png" width="47%">
+  <img src="figures/GODAG_plot1" width="47%">
+  <img src="figures/GODAG_plot2" width="47%">
+    <p align="center"><em>
+Figure 2. Left (C): A predicted cellular-component term (center) is shown together with nearby GO ancestors/descendants in the GO directed acyclic graph. Arrows point upward in the ontology (from more specific child terms toward more general parent terms), illustrating how related subcellular-location terms cluster along a small number of biologically meaningful paths.
+Right (F): A predicted molecular-function term (center) is connected to increasingly general DNA-binding terms. The directed edges visualize how a specific binding activity implies membership in broader functional categories, providing a mechanistic sanity-check for model predictions via ontology structure.
+</em></p>
 </div>
 
 ### Denoising strategy
