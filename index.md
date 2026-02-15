@@ -15,8 +15,8 @@ This project presents an end-to-end protein function prediction pipeline develop
 ### Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning
 
 <div style="display: flex; gap: 10px;">
-  <img src="figures/cafa6_architecture5_fixed.png" width="48%">
-  <img src="figures/cafa6_architecture5_fixed.png" width="48%">
+  <img src="figures/cafa6_architecture_fixed.png" width="48%">
+  <img src="figures/cafa6_architecture_fixed.png" width="48%">
   <p align="center"><em>
 Figure 2. Neural network architecture.
 </em></p>
