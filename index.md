@@ -41,6 +41,8 @@ Figure 2. Diagnostic comparison across three validation cases for AP.
 
 
 ### GO-DAG propagation
+GO terms are not independent labels: they live in a directed acyclic graph (DAG) where edges encode “is-a” / “part-of” relationships. In practice, if a protein is predicted with high confidence for a specific term, it is often reasonable—and biologically consistent—to assign some confidence to its ancestors (more general terms). I use this structure as a lightweight post-processing step: after aggregating model outputs (e.g., across folds), I propagate signal upward (child → parent) under controlled rules (depth, minimum score threshold, and propagation strength), which can improve ontology-consistency and sometimes recall while keeping precision under control.
+Figure X provides a qualitative illustration: predicted center terms sit on short, meaningful ontology paths, showing how the GO-DAG encodes “specific implies general” relationships that we can leverage during post-aggregation.
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/GODAG_plot1.png" width="47%">
