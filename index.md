@@ -6,9 +6,53 @@ This project presents an end-to-end protein function prediction pipeline develop
 
 ## Exploratory Data Analysis
 
-![Main result](figures/fig1.png)
+## Exploratory Data Analysis
 
-**Figure 1.** 
+<div style="display: flex; gap: 10px;">
+  <img src="figures/fig_label_frequency_spectra_FPC.png" width="48%">
+  <img src="figures/fig_topK_cum_coverage_P.png" width="48%">
+</div>
+
+<p align="center"><em>
+Figure E1 (left). Train label frequency spectra for Molecular Function (F), Biological Process (P), and Cellular Component (C). The number of GO terms is plotted against the number of annotated proteins per term (log–log). All aspects exhibit a pronounced long-tail distribution: a small number of frequent terms and a very large number of rare ones.
+<br><br>
+Figure E2 (right). Cumulative positive coverage for Biological Process (P) as a function of K, where only the K most frequent labels are retained. The curve shows a clear knee: coverage rises rapidly for small K and then saturates more slowly, providing a quantitative basis for selecting a head vocabulary size (e.g., K≈2000–3000) before treating the long tail separately.
+</em></p>
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/fig_topK_frequency_threshold_P.png" width="48%">
+  <img src="figures/fig_IA_vs_label_frequency_density_P_log.png" width="48%">
+</div>
+
+<p align="center"><em>
+Figure E3 (left). Frequency threshold vs rank for P terms: the number of positive proteins associated with the K-th most frequent label (log–log). This illustrates how rapidly terms become extremely sparse beyond a chosen K, helping assess whether additional labels are learnable from the available supervision.
+<br><br>
+Figure E4 (right). Density map of Information Accretion (IA) versus label frequency for P (log-intensity). Higher-IA terms tend to be rarer, linking ontology specificity to data sparsity and motivating IA-aware calibration and post-processing strategies later in the pipeline.
+</em></p>
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/fig_train_sequence_lengths_loglog.png" width="48%">
+  <img src="figures/fig_labels_per_protein_FPC_total.png" width="48%">
+</div>
+
+<p align="center"><em>
+Figure E5 (left). Train sequence length distribution (log–log). Protein lengths span several orders of magnitude, motivating careful batching, truncation, and compute-aware design when fine-tuning transformer models.
+<br><br>
+Figure E6 (right). Distribution of annotation counts per protein for F/P/C and total (log scale). Most proteins carry relatively few labels, while a smaller subset is densely annotated, contributing to large variance across proteins and folds.
+</em></p>
+
+### Summary of EDA insights
+
+Before training, I inspected label and sequence statistics to understand class imbalance, annotation sparsity, and whether a restricted label vocabulary would be justified. This avoids “blind” modeling and directly informs later architectural and post-processing choices.
+
+The label-frequency spectra reveal an extreme long-tail structure across all GO aspects, implying that naive multi-label training is dominated by negatives and that performance differs strongly between frequent “head” terms and rare “tail” terms. The top-K coverage and threshold plots show that, especially for Biological Process, a relatively small subset of labels already explains a large fraction of positive annotations, while labels beyond K≈2000–3000 become extremely sparse. This motivates training on a controlled head vocabulary and treating the tail separately.
+
+The IA–frequency density further shows that high-information (more specific) terms are typically rare, providing a principled link between ontology specificity and data sparsity. This observation later motivates IA-aware calibration and GO-DAG–based aggregation rules.
+
+Finally, the wide distribution of protein lengths and the sparse per-protein annotation counts highlight practical constraints for transformer fine-tuning (memory, truncation) and explain why fold-level variance and tail performance require special attention.
+
+Together, these diagnostics establish the statistical structure of the CAFA-6 dataset and motivate the modeling, aggregation, and denoising strategies described in the following sections.
+
 
 ### Machine Learning Models
 
