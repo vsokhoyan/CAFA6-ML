@@ -143,18 +143,9 @@ Right (F): A predicted molecular-function term (center) is connected to increasi
 </em></p>
 </div>
 
-### Denoising strategy
+### Denoising strategy and empirically observed limitations
 
-## Diagnostics
-
-![Style-1 plot](figures/fig_style1.png)
-
-**Figure 2.** Style-1 plot: center-term confidence with ancestor structure.
-
-![Style-2 plot](figures/fig_style2.png)
-
-**Figure 3.** Style-2 plot: probability distribution vs true-term density.
-
-## Interpretation
 
 ## Summary and Outlook
+
+## Bibliography
