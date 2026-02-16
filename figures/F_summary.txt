@@ -1,0 +1,53 @@
+ASPECT F
+N_test=224,309  K_terms=2,500  topM=250
+BASE_WIN=(0.35, 1.0)  RAW_MIN=0.005  IA_MIN_BASE=0.2
+IA bands: low<1, high>=5
+
+total_candidate_events=5,859,811
+proteins_with_any_cand=224,309 / 224,309
+proteins_with_any_BASEpass_event=176,501 / 224,309
+proteins_with_k=5_event=92,800 / 224,309
+proteins_with_single_fold_event=69,790 / 224,309
+mean_pairwise_Jaccard(topM_sets)_per_protein=0.377338
+
+k_support_hist (k=0..5): 5499215 92679 52580 46597 55426 113314
+k_support_hist_norm_over_k1..5:
+  15.250349 0.257016 0.145814 0.129222 0.153707 0.314241
+
+washout_vs_mean5_total: LOST=142,499  GAINED=0
+washout_by_IAband:
+  LOST:   LOW=60,726 MID=63,246 HIGH=18,527
+  GAINED: LOW=0 MID=0 HIGH=0
+
+single_fold_firing_total_by_fold (k=1, mask=1<<i):
+  fold_00: 18,212
+  fold_01: 18,783
+  fold_02: 19,160
+  fold_03: 19,482
+  fold_04: 17,042
+single_fold_firing_by_IAband:
+  LOW (IA<1): 8155 8048 7514 8198 6596
+  MID (1≤IA<5): 7956 8237 8897 8716 8204
+  HIGH (IA≥5): 2101 2498 2749 2568 2242
+
+top fold-combos (excluding mask=0):
+  mask=31 folds={0,1,2,3,4}  k=5  count=113,314
+  mask=08 folds={3}  k=1  count=19,482
+  mask=04 folds={2}  k=1  count=19,160
+  mask=02 folds={1}  k=1  count=18,783
+  mask=01 folds={0}  k=1  count=18,212
+  mask=16 folds={4}  k=1  count=17,042
+  mask=30 folds={1,2,3,4}  k=4  count=11,569
+  mask=15 folds={0,1,2,3}  k=4  count=11,139
+  mask=27 folds={0,1,3,4}  k=4  count=11,087
+  mask=23 folds={0,1,2,4}  k=4  count=10,887
+  mask=29 folds={0,2,3,4}  k=4  count=10,744
+  mask=12 folds={2,3}  k=2  count=5,736
+  mask=06 folds={1,2}  k=2  count=5,734
+  mask=10 folds={1,3}  k=2  count=5,656
+  mask=13 folds={0,2,3}  k=3  count=5,440
+  mask=03 folds={0,1}  k=2  count=5,412
+  mask=05 folds={0,2}  k=2  count=5,250
+  mask=09 folds={0,3}  k=2  count=5,191
+  mask=20 folds={2,4}  k=2  count=5,056
+  mask=14 folds={1,2,3}  k=3  count=5,040
