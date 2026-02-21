@@ -61,9 +61,15 @@ Together, these diagnostics establish the statistical structure of the CAFA-6 da
   <p align="center"><em>
 Figure 2. Neural network architecture.
 </em></p>
-
 </div>
 
+<div style="display: flex; gap: 10px;">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_fixed.png" width="48%">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png" width="50%">
+  <p align="center"><em>
+Figure 2. Neural network architecture.
+</em></p>
+</div>
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="98%">
