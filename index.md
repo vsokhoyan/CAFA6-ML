@@ -72,6 +72,7 @@ Figure 2. Mean validation Fmax (top row) and AP (bottom row) across 5 folds for 
 </em></p>
 
 </div>
+
 ### Training on rare labels vs. main training body
 
 <div style="display: flex; gap: 10px;">
