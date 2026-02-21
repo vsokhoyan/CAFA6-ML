@@ -66,7 +66,7 @@ Figure 2. Neural network architecture.
 
 
 <div style="display: flex; gap: 10px;">
-  <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="48%">
+  <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="98%">
   <p align="center"><em>
 Figure 2. Mean validation Fmax (top row) and AP (bottom row) across 5 folds for fixed ProtT5 embeddings versus end-to-end fine-tuning of the last two transformer blocks. Fine-tuning consistently improves performance across all ontologies, with particularly strong gains for Biological Process (P). Tuned models converge faster and reach higher plateaus despite shorter training schedules, indicating meaningful adaptation of internal representations beyond downstream classifiers.
 </em></p>
