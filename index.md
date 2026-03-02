@@ -82,7 +82,13 @@ Figure 2. Neural network architecture.
   <p align="center"><em>
 Figure 2. Mean validation Fmax (top row) and AP (bottom row) across 5 folds for fixed ProtT5 embeddings versus end-to-end fine-tuning of the last two transformer blocks. Fine-tuning consistently improves performance across all ontologies, with particularly strong gains for Biological Process (P). Tuned models converge faster and reach higher plateaus despite shorter training schedules, indicating meaningful adaptation of internal representations beyond downstream classifiers.
 </em></p>
+</div>
 
+<div style="display: flex; gap: 10px;">
+  <img src="figures/ESM2_full" width="98%">
+  <p align="center"><em>
+Figure 2. ESM2 fine-tuning.>.
+</em></p>
 </div>
 
 ### Training on rare labels vs. main training body
