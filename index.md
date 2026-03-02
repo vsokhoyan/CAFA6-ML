@@ -85,6 +85,13 @@ Figure 2. Mean validation Fmax (top row) and AP (bottom row) across 5 folds for 
 </div>
 
 <div style="display: flex; gap: 10px;">
+  <img src="figures/prott5_batch_compare_grid.png" width="98%">
+  <p align="center"><em>
+Figure 2. The effect of the batch size ...
+</em></p>
+</div>
+
+<div style="display: flex; gap: 10px;">
   <img src="figures/ESM2_full.png" width="98%">
   <p align="center"><em>
 Figure 2. ESM2 fine-tuning.
