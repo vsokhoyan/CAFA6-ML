@@ -70,6 +70,42 @@ Figure 2. Neural network architecture.
 </em></p>
 </div>
 
+
+## Experimental configuration
+
+| Section          | Parameter               | Value                 | Notes                                                       |
+| ---------------- | ----------------------- | --------------------- | ----------------------------------------------------------- |
+| Model            | Backbone                | ProtT5-XL-UniRef50    | `Rostlab/prot_t5_xl_uniref50`                               |
+|                  | Max token length        | 1 024                 | sequences truncated to 1 022 AAs                            |
+|                  | Unfrozen encoder blocks | 4 (last)              | all earlier weights frozen                                  |
+|                  | Gradient checkpointing  | disabled              | stability fix for MI300X / ROCm                             |
+| Heads            | Pooling                 | Attention pooling     | per-aspect learned scorer → weighted sum                    |
+|                  | Head architecture       | MLP (2-layer)         | d_model → 512 → out_dim                                     |
+|                  | Head dropout            | 0.15                  | applied before each linear layer                            |
+|                  | Attention pool dropout  | 0.01                  |                                                             |
+|                  | Asymmetric P head       | yes (detach)          | F & C pooled representations bridge into P head (stop-grad) |
+|                  | P bridge dim            | 128                   | projected dim of F/C bridge vectors                         |
+|                  | P MLP hidden            | 256                   |                                                             |
+|                  | P output terms (P_K)    | 2 000                 | top-K GO-P terms retained                                   |
+| Optimisation     | Optimizer               | AdamW                 |                                                             |
+|                  | Encoder LR              | 1.5 × 10⁻⁴            |                                                             |
+|                  | Head LR                 | 2.0 × 10⁻³            |                                                             |
+|                  | Weight decay            | 0.01                  | encoder params only                                         |
+|                  | LR schedule             | cosine decay          | linear warmup → cosine                                      |
+|                  | Warmup fraction         | 5 %                   | of total optimiser steps                                    |
+|                  | Epochs                  | 10                    |                                                             |
+|                  | Batch size              | 32                    | per GPU                                                     |
+|                  | Gradient accumulation   | 2                     | effective batch = 64                                        |
+|                  | Precision               | bfloat16              | autocast on GPU                                             |
+|                  | P loss weight           | 1.0                   | loss = L_F + 1.0·L_P + L_C                                  |
+| Cross-validation | Strategy                | Stratified 5-fold     | stratified by taxonomy                                      |
+|                  | Rare taxon threshold    | 5                     | taxa with < 5 samples → 'RARE' bucket                       |
+|                  | Fold shuffle            | yes                   | seed = 42                                                   |
+| Validation       | Fast val size           | 8 192                 | random subset; evaluated every 1 000 opt steps              |
+|                  | Full val frequency      | every 2 epochs        | full OOF set                                                |
+|                  | Model selection metric  | macro Fmax (fast val) |                                                             |
+
+
 <div style="display: flex; gap: 10px;">
   <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png" width="98%">
   <p align="center"><em>
