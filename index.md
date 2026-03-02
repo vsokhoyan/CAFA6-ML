@@ -77,7 +77,7 @@ Figure 2. Neural network architecture.
 | ---------------- | ----------------------- | --------------------- | ----------------------------------------------------------- |
 | Model            | Backbone                | ProtT5-XL-UniRef50    | `Rostlab/prot_t5_xl_uniref50`                               |
 |                  | Max token length        | 1 024                 | sequences truncated to 1 022 AAs                            |
-|                  | Unfrozen encoder blocks | 4 (last)              | all earlier weights frozen                                  |
+|                  | Unfrozen encoder blocks | 2 (last)              | all earlier weights frozen                                  |
 |                  | Gradient checkpointing  | disabled              | stability fix for MI300X / ROCm                             |
 | Heads            | Pooling                 | Attention pooling     | per-aspect learned scorer → weighted sum                    |
 |                  | Head architecture       | MLP (2-layer)         | d_model → 512 → out_dim                                     |
