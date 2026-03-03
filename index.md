@@ -70,45 +70,6 @@ Figure 2. Neural network architecture.
 </em></p>
 </div>
 
-## Experimental Setup — ProtT5 Fine-Tuning
-
-| **Category** | **Parameter** | **Value** |
-|--------------|--------------|-----------|
-| **Backbone** | Model | `Rostlab/prot_t5_xl_uniref50` (encoder-only variant) |
-| | Maximum input length | 1024 tokens |
-| | Sequence preprocessing | Head truncation at 1022 amino acids |
-| | Fine-tuning scope | Last 4 transformer encoder blocks and final layer normalization |
-| | Gradient checkpointing | Disabled |
-| **Prediction Heads** | F and C heads | Attention pooling followed by MLP classifier |
-| | P head | Asymmetric classifier incorporating detached F/C pooled representations |
-| | P label space | Top 2000 terms (P_K = 2000) |
-| | Attention pooling hidden dimension | 128 |
-| | Classifier dropout | 0.15 |
-| | Attention pooling dropout | 0.01 |
-| | F/C MLP hidden dimension | 512 |
-| | P bridge dimension | 128 |
-| | P bridge dropout | 0.00 |
-| | P MLP hidden dimension | 256 |
-| **Cross-Validation** | Strategy | 5-fold stratified cross-validation based on taxonomy |
-| | Rare taxon handling | Taxa with frequency < 5 grouped into a single “RARE” class |
-| | Random seed | 42 (fold seed = 42 + k) |
-| **Optimization** | Training epochs | 10 |
-| | Batch size | 32 |
-| | Gradient accumulation | 2 |
-| | Effective batch size | 64 |
-| | Optimizer | AdamW with separate parameter groups (encoder / heads) |
-| | Learning rate (encoder) | 1.5 × 10⁻⁴ |
-| | Learning rate (heads) | 2.0 × 10⁻³ |
-| | Weight decay | 0.01 (encoder), 0.0 (heads) |
-| | Learning rate schedule | Linear warmup (5% of total steps) followed by cosine decay |
-| | Loss function | Binary cross-entropy with logits; total loss = F + P + C (P_W = 1.0) |
-| **Numerical Precision** | Mixed precision | BF16 on CUDA; FP16 disabled |
-| **Validation Protocol** | Fast validation subset | 8192 validation proteins sampled per fold |
-| | Fast evaluation frequency | Every 1000 optimizer steps |
-| | Full validation evaluation | Every 2 epochs |
-| | Initial full evaluation | Omitted |
-
-
 ## Experimental configuration
 
 | Section          | Parameter               | Value                 | Notes                                                       |
