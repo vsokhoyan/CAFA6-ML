@@ -248,8 +248,8 @@ GO terms are not independent labels: they live in a directed acyclic graph (DAG)
 Figure X provides a qualitative illustration: predicted center terms sit on short, meaningful ontology paths, showing how the GO-DAG encodes “specific implies general” relationships that we can leverage during post-aggregation.
 
 <div style="display: flex; gap: 10px;">
-  <img src="figures/GODAG_plot1.png" width="47%">
-  <img src="figures/GODAG_plot2.png" width="47%">
+  <img src="figures/GODAG_CC_nice.png" width="47%">
+  <img src="figures/GODAG_MF_nice.png" width="47%">
     
   <p align="center"><em>
 Figure 2. Left (C): A predicted cellular-component term (center) is shown together with nearby GO ancestors/descendants in the GO directed acyclic graph. Arrows point upward in the ontology (from more specific child terms toward more general parent terms), illustrating how related subcellular-location terms cluster along a small number of biologically meaningful paths.
