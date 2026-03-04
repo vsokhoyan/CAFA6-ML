@@ -9,6 +9,18 @@ This project presents an end-to-end protein function prediction pipeline develop
 ## Exploratory Data Analysis
 
 <div style="display: flex; gap: 10px;">
+  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="48%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed.png" width="48%">
+</div>
+
+<p align="center"><em>
+Figure E1 (left). ....
+<br><br>
+Figure E2 (right). ....
+</em></p>
+
+
+<div style="display: flex; gap: 10px;">
   <img src="figures/fig_label_frequency_spectra_FPC.png" width="48%">
   <img src="figures/fig_topK_cum_coverage_P.png" width="48%">
 </div>
