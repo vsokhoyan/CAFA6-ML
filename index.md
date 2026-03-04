@@ -182,20 +182,9 @@ A five-fold model ensemble can be aggregated in multiple ways (mean, median, or 
 
 <div style="display: flex; gap: 10px;"> <img src="figures/P_fold_combo_top12.png" width="48%"> <img src="figures/P_single_fold_by_IAband.png" width="48%"> </div> <p style="margin-top: 6px; font-size: 0.95em;"> <b>Figure 1.</b> <i>Left:</i> Most frequent fold-combinations (top 12) for base-passing events in the P aspect; single-fold patterns {0}…{4} appear nearly as often as full five-fold agreement {0,1,2,3,4}, revealing substantial fold-sparse signal. <i>Right:</i> Single-fold firing (k=1) by IA band and fold index, showing that sparse-support events are common and not dominated by one particular fold. </p>
 
-
-<div style="display: flex; gap: 10px;"> <img src="figures/P_fold_combo_top12.png" width="48%"> <img src="figures/P_k_support_counts.png" width="48%"> </div> <p style="margin-top: 6px; font-size: 0.95em;"> <b>Figure 1.</b> <i>Left:</i> Most frequent fold-combinations (top 12) for base-passing events in the P aspect; single-fold patterns {0}…{4} appear nearly as often as full five-fold agreement {0,1,2,3,4}, revealing substantial fold-sparse signal. <i>Right:</i> Histogram of k-support (k = number of folds passing the base gate) over the same candidate events; in P, a large fraction of passing events have k=1 and only a minority have k=5. </p>
-
 For the Biological Process aspect (P), fold support is notably sparse. Figure 1 (left) shows that single-fold firing patterns {0}, {1}, {2}, {3}, {4} are among the most frequent outcomes—comparable in scale to full five-fold agreement {0,1,2,3,4}. Figure 1 (right) quantifies this sparsity via k-support: among events that pass in at least one fold, k=1 constitutes a large share, while k=5 constitutes a much smaller share. This immediately suggests that aggregation rules that implicitly require multi-fold consensus can suppress a substantial portion of P signal.
 
-Mean vs median: “washout” is structural for P
-
 Mean aggregation is often used to stabilize ensembles, but it has a specific failure mode when fold support is sparse: a strong score in one fold can be diluted by weaker scores in the remaining folds. We measured this effect explicitly by comparing any-fold passing vs mean-of-5 passing under the same base gate. Events that pass in at least one fold but fail after mean-of-5 are labeled LOST (“washout”). Because the mean cannot exceed the per-fold maximum, the opposite case (GAINED) is mathematically impossible when applying the same threshold.
-
-<div style="display: flex; gap: 10px;"> 
-  <img src="figures/P_washout_vs_mean5_by_IAband.png" width="48%"> 
-  <img src="figures/P_k_support_by_IAband_counts.png" width="48%"> 
-</div> <p style="margin-top: 6px; font-size: 0.95em;"> 
-  <b>Figure 2.</b> <i>Left:</i> Washout vs mean-of-5 aggregation, stratified by IA band (LOW/MID/HIGH): “LOST” counts (any-fold passes, mean-of-5 fails) quantify how averaging can drop fold-sparse events; “GAINED” is zero by construction under a shared threshold. <i>Right:</i> k-support distributions stratified by IA band, showing how fold support varies across term information content. </p>
 
 Figure 2 (left) shows that washout is substantial in P: a large number of events that pass in at least one fold fall below the base gate after averaging. Stratifying by information content (IA) indicates that washout is concentrated in the low–mid IA regime, i.e., it is not restricted to only the most extreme rare-term tail. This provides a mechanistic explanation for why simple averaging can be detrimental in P: a large portion of events are supported by only 1–2 folds, and averaging pushes many of these below the gate.
 
@@ -210,12 +199,6 @@ Low IA (common terms): use the mean over all 5 folds (stable consensus).
 Mid IA: use the mean over the top-3 folds (reduces dilution of partial support).
 
 High IA (rare/specific terms): use the mean over the top-2 folds (preserves strong fold-local evidence).
-
-<div style="display: flex; gap: 10px;"> 
-  <img src="figures/P_k_support_by_IAband_norm.png" width="48%"> 
-  <img src="figures/P_single_fold_by_IAband.png" width="48%"> 
-</div> <p style="margin-top: 6px; font-size: 0.95em;"> 
-  <b>Figure 3.</b> <i>Left:</i> k-support distributions by IA band (normalized within each band over k=1..5), highlighting that fold support structure depends on term information content. <i>Right:</i> Single-fold firing (k=1) by IA band and fold index, showing that sparse-support events are common and not dominated by one particular fold. </p>
 
 Figure 3 links the aggregation choice directly to the empirical structure of the ensemble. The IA-stratified k-support (left) shows that fold support varies with term IA, while the single-fold analysis (right) demonstrates that sparse-support events are common and distributed across folds rather than being driven by a single outlier fold. IA-aware pooling exploits this structure: it retains robustness for low-IA, high-consensus terms while mitigating the systematic dilution that mean (and especially median) impose on higher-IA predictions.
 
