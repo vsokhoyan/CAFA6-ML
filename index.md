@@ -10,7 +10,7 @@ This project presents an end-to-end protein function prediction pipeline develop
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="48%">
-  <img src="figures/fig_IA_vs_logpos_density_P_smoothed.png" width="48%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="48%">
 </div>
 
 <p align="center"><em>
