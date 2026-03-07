@@ -216,44 +216,22 @@ Overall, this denoising strategy was still valuable: it exposed a diagnostic han
 ## Summary
 
 In this work, the following reusable results were obtained:
-- Fine tuning of ProtT5 was studied under various conditions. As a result of extensive tests an asymmetric
-  architecture (MF and CC ontology data processing lines connected to BP without mirrored inout from BP for MF and CC)
-  for the neural network was chosen to optimize the performance of the BP-ontology without distroting the performance for MF and CC.
-- The performance for ProtT5 XL and ESM2 models (tr6 shown in this document) was compared for fixed embedding and further training
-  of an MLP + Attention layer setup (described in Fig. ...) with a an end-to-end tuning of transformers with (partially or fully)
-  unfrozen layers and MLP/Attn-based head. The results confirmed the studies presented in literature (+refs) that the end-to-end
-  transformer fine-tuning leads to improved results compared with model training on fixed embeddings and the improvement is stronger
-  for lower performing models. In particular, it is shown in Section ... that the performance of Prott5 increased notably with the
-  end-toend fine-tuning, specifically for P. The end-to-end fine-tuning with ESM2 provided much stronger relative improvement compared
-  to fixed-embedding-based baseline. However, as expected, due to overall superior model performance Prott5 still overcomes the ESM2 small
-  after fine-tuning.
-- The end-to-end model training converges faster than training with fixed embeddings under similar conditions. The validation Fmax enters the area
-  of diminishing returns comparably early in case of end-to-end tuning, however one may still profit from longer in terms of validation AP,
-  and this tendency should be monitored carefully during training (dependent on the final goal).
-- The model training was studied separately for the low-frequency tail of BP ontology (label frequency = 2000 - 3400) in dedicated runs with
-  the output for the entire data set (most frequent 1-3400 labels), core part (labels = 1 - 2000), and the tail (for labels at 2000-3400).         
-  It was shown that specifically the cases rare labels profit from prolonged model training (specifially strong in P), despite the fact that
-  Fmax and AP seemingly enter into the diminishing returns plateuing regime. This can be monitored by carefully splitting the ouptut for the
-  area of interest with varying statistical distributions in the training data. 
-- The study of the combination of 5 folds used during training showed compatible performance in terms of Fmax and AP. Hpowever, further detailed
-  invetigation indicated that a significant part of the signal may be found either in single folds or only in a limited combinations of folds,
-  but not necessarily in all 5 folds used in this analysis. Furthermore, as a consequence, the median for the signal for all folds provided the
-  lowest performance rejecting too much real signal, mean of the fold scores showed somewhat better performance and the best result was achieved with
-  IA-based poling described in Section ... (could add LB values here for roiugh compoarison - or leave it as it is  and include the numbers in the
-  IA-pooling section).
-- The applied GO-DAG propagation improved the Fmax results notably. The example graphs shown in Section ... indicate plausible and biology-informed
-  propagation performed in this analysis.
-- The attempts for denoising the finally extracted signal was performed uisng UniProt database by requesting a presence in UniProt and studying
-  the influence of this cut of true and false positive sample. The study clearly showed a significant (>...%) suppression of false positive with minor
-  reduction of the true positive signal. However, this pattern did not transfer to CAFA LB on kaggle showing either unchaged performance or variations
-  within the LB noise. 
 
-This work provided several insights which may be reused in other studies. In particular the extensive comparison of cases with fixed vs. end-to-end 
-training with unfreezing of tranformer layers could be valuable in various fields. Thius work required significant experimentation rigor and computational +
-experiments with various GPUs (including "heavier" ones such as A100 or MI300X). Moreover, the study with fold-handling and the solution avoiding using
-mean or median of the scores for multiple folds and relying on IA-pooling instead found to be specifically useful for CAFA-6 data, can be applied in other 
-studies as well. Due to abovementioned results, the author is considering the opportiunity of publication in bio-statistical journals and would be open
-for collaboration with researchers from this field.
+- Fine-tuning of ProtT5 was studied under various conditions. As a result of extensive tests, an asymmetric architecture (MF and CC ontology data processing lines connected to BP without mirrored input from BP to MF and CC) for the neural network was chosen to optimize the performance of the BP ontology without distorting the performance for MF and CC.
+
+- The performance of ProtT5 XL and ESM2 models (tr6 shown in this document) was compared for fixed embeddings and further training of an MLP + Attention layer setup (described in Fig. ...) with end-to-end tuning of transformers with partially or fully unfrozen layers and an MLP/Attn-based head. The results confirmed studies presented in the literature (+refs) that end-to-end transformer fine-tuning leads to improved results compared with model training on fixed embeddings, and that the improvement is stronger for lower-performing models. In particular, it is shown in Section ... that the performance of ProtT5 increased notably with end-to-end fine-tuning, specifically for P. The end-to-end fine-tuning with ESM2 provided a much stronger relative improvement compared to the fixed-embedding baseline. However, as expected, due to the overall superior model performance, ProtT5 still outperforms the smaller ESM2 model after fine-tuning.
+
+- The end-to-end model training converges faster than training with fixed embeddings under similar conditions. The validation Fmax enters the area of diminishing returns comparatively early in the case of end-to-end tuning; however, further improvements may still be observed in terms of validation AP, and this tendency should be monitored carefully during training depending on the final optimization goal.
+
+- The model training was studied separately for the low-frequency tail of the BP ontology (label frequency = 2000–3400) in dedicated runs with outputs analyzed for the entire data set (most frequent labels 1–3400), the core part (labels 1–2000), and the tail (labels 2000–3400).It was shown that specifically rare labels profit from prolonged model training (particularly strong in P), despite the fact that Fmax and AP seemingly enter a diminishing-returns plateauing regime. This can be monitored by carefully splitting the output for the area of interest with varying statistical distributions in the training data.
+
+- The study of the combination of the five folds used during training showed compatible performance in terms of Fmax and AP. However, further detailed investigation indicated that a significant part of the signal may be found either in single folds or only in limited combinations of folds, but not necessarily in all five folds used in this analysis. As a consequence, the median across folds provided the lowest performance by rejecting too much real signal, while the mean of the fold scores showed somewhat better performance. The best results were achieved with IA-based pooling described in Section ... (LB values could be added here for rough comparison, or included only in the IA-pooling section).
+
+- The applied GO-DAG propagation improved the Fmax results notably. The example graphs shown in Section ... indicate plausible and biologically informed propagation performed in this analysis.
+
+- Attempts at denoising the final extracted signal were performed using the UniProt database by requiring presence in UniProt and studying the influence of this cut on true and false positive samples. The study clearly showed a significant (>...%) suppression of false positives with only minor reduction of the true positive signal. However, this pattern did not transfer to the CAFA leaderboard on Kaggle, showing either unchanged performance or variations within the expected leaderboard noise.
+
+This work provided several insights that may be reused in other studies. In particular, the extensive comparison of cases with fixed vs. end-to-end training with unfreezing of transformer layers could be valuable in various fields. This work required significant experimental effort and computational resources, including experiments with various GPUs (such as A100 and MI300X). Moreover, the study of fold handling and the solution avoiding the use of mean or median scores across multiple folds in favor of IA-based pooling, which was found to be particularly useful for CAFA-6 data, may also be applicable in other studies. Due to the results mentioned above, the author is considering the opportunity of publication in bio-statistical journals and would be open to collaboration with researchers from this field.
 
 
 
