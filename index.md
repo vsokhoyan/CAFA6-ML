@@ -215,4 +215,10 @@ Overall, this denoising strategy was still valuable: it exposed a diagnostic han
 
 ## Summary and Outlook
 
+In this work, the following results results were obtained:
+- First item
+- Second item
+- Third item
+
+
 ## Bibliography
