@@ -194,8 +194,6 @@ This produces a clear qualitative signature on validation: FP mass is removed â€
 
 <p align="center">
   <img src="figures/ProbDist__TP_FP__before_after__F__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png" width="100%">
-  <img src="figures/ProbDist__TP_FP__before_after__C__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png" width="100%">
-</p>
 <p align="center"><em>
 Figure D1. Score distributions of retained Top-M candidates (Meta-CatBoost probability &gt; 0.20), showing True Positives (TP) and False Positives (FP) before vs. after UniProt/GOA-guided denoising. Top: Molecular Function (F). Bottom: Cellular Component (C). In both aspects, denoising strongly suppresses FP density in the low-to-mid score region while leaving the TP distribution comparatively stable.
 </em></p>
