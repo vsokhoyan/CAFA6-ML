@@ -1,4 +1,4 @@
-# Protein Function Prediction (CAFA-6)
+# Protein Function Prediction (CAFA-6) using Transformer-Based Protein Language Models
 
 ## Overview
 
