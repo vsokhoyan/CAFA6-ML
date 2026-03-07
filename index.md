@@ -7,9 +7,7 @@ using Transformer-Based Deep Learning Models
 
 This project presents an end-to-end protein function prediction pipeline developed for the CAFA-6 challenge on Google Kaggle, combining transformer-based embeddings, supervised machine-learning models, and ontology-aware post-processing. I compare fixed embeddings with end-to-end fine-tuned transformers, analyze performance across rare and frequent labels, and introduce GO-DAG–aware aggregation and denoising strategies to improve biological consistency of predictions. Beyond leaderboard metrics, I emphasize diagnostics and interpretability—showing how model outputs align with Gene Ontology structure and how specific predictions propagate to broader functional categories. The result is a practical, transparent workflow that balances predictive performance with biological plausibility, illustrated through quantitative validation and GO-DAG–based visual examples.
 
-## Exploratory Data Analysis
-
-## Exploratory Data Analysis
+## Data
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="54%">
