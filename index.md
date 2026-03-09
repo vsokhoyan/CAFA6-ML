@@ -5,21 +5,37 @@ Protein Function Prediction (CAFA-6)
 
 ## Overview
 
-Predicting protein function from amino-acid sequence remains a central problem in Computational Biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. The workflow combines transformer-derived embeddings, training supervised Machine Learning models, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were used to account for the statistical structure of ensemble predictions and hierarchical structure in the provided GO-DAG knowledge graphs.
+Predicting protein function from amino-acid sequence remains a central problem in Computational Biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. This work presents a systematic approach to protein function prediction developed for the CAFA-6 challenge, achieving top 30% global performance through transformer-based architectures, novel ensemble methods, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were used to account for the statistical structure of ensemble predictions and hierarchical structure in the provided GO-DAG knowledge graphs.
 
-## Key contributions
+** Key results: **
 
-- Systematic comparison of fixed embeddings vs. end-to-end transformer fine-tuning with unfrozen internal transformer layers using ProtT5 and ESM2 architectures.
+- Fine-tuned 3-billion parameter transformer models (ProtT5-XL) and smaller ESM2 models for protein sequence analysis.
+- Designed asymmetric neural architecture leveraging biological ontology structure (Gene Ontology)
+- Developed information-theoretic ensemble aggregation outperforming standard methods
+- Large-scale GPU computation on modern accelerators (NVIDIA A100, AMD MI300X)
 
-- Empirical analysis of label sparsity and information accretion (IA) demonstrating the strong long-tail structure of Gene Ontology annotations and its implications for model training.
+Approach: End-to-end machine learning pipeline from raw sequences to Gene Ontology predictions, combining state-of-the-art transformers with domain-informed architectural choices and rigorous validation.
+Technical Highlights
 
-- Application of an asymmetric multi-head architecture linking Molecular Function (MF) and Cellular Component (CC) representations to the Biological Process (BP) head, improving BP performance without degrading MF/CC predictions.
+Systematic architecture exploration
 
-- Analysis of ensemble fold behavior, showing that a substantial fraction of signal appears in single or few folds, thus motivating IA-aware pooling instead of standard mean or median aggregation.
+Compared fixed-embedding versus end-to-end transformer fine-tuning approaches
+End-to-end fine-tuning provided consistent performance improvements across all ontology aspects
+Characterized training dynamics for labels spanning three orders of magnitude in frequency
 
-- Ontology-aware post-processing using GO-DAG propagation, improving biological consistency and increasing Fmax.
+Novel design contributions
 
-- Reference-guided denoising experiments using UniProt/GOA, revealing structured false-positive patterns and highlighting limitations of validation-only improvements for leaderboard transfer.
+Asymmetric multi-head architecture where Molecular Function and Cellular Component inform Biological Process predictions
+Information Accretion (IA)-aware ensemble pooling exploiting observed fold-support sparsity patterns
+GO-DAG propagation for biologically-consistent hierarchical post-processing
+
+Rigorous validation
+
+Systematic ablation studies quantified each component's contribution
+Analysis of validation-test transfer challenges (e.g., reference-guided denoising)
+Clear documentation of what worked (architectural improvements, IA-pooling) versus what showed limited transfer (denoising strategies)
+
+Skills demonstrated: Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
 
 ## Data
 
