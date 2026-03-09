@@ -69,10 +69,15 @@ Performance is measured using information-accretion weighted F-measure (Fmax), w
 
 ### Key Data Characteristics
 
-![Figure E1](figures/fig_cumulative_coverage_FPC_annotated.png) 
-![Figure E2](figures/fig_IA_vs_logpos_density_P_smoothed_white.png)
+<p align="center">
+  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="49%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="49%">
+</p>
 
-**Figure E1.** Cumulative annotation coverage versus retained terms (top-K). **Figure E2.** Term specificity (IA) versus frequency.
+<p align="center"><em>
+<b>Figure E1</b> (left). Cumulative annotation coverage versus retained terms (top-K).
+<b>Figure E2</b> (right). Term specificity (IA) versus frequency.
+</em></p>
 
 **Extreme label imbalance:** GO annotations follow a pronounced long-tail distribution (Figure E1). A small subset of frequent terms explains most annotations, while thousands of specific terms occur rarely. For Biological Process, only ~2000 terms cover 80-85% of annotations, but the full ontology contains 15,000+ terms.
 
