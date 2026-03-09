@@ -7,7 +7,7 @@ Protein Function Prediction (CAFA-6)
 
 Predicting protein function from amino-acid sequence remains a central problem in Computational Biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. This work presents a systematic approach to protein function prediction developed for the CAFA-6 challenge, achieving top 30% global performance through transformer-based architectures, novel ensemble methods, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were used to account for the statistical structure of ensemble predictions and hierarchical structure in the provided GO-DAG knowledge graphs.
 
-** Key results: **
+**Key results:**
 
 - Fine-tuned 3-billion parameter transformer models (ProtT5-XL) and smaller ESM2 models for protein sequence analysis.
 - Designed asymmetric neural architecture leveraging biological ontology structure (Gene Ontology)
