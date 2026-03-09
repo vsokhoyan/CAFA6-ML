@@ -33,8 +33,7 @@ Predicting protein function from amino-acid sequence remains a central problem i
 - Analysis of validation-test transfer challenges (e.g., reference-guided denoising)
 - Clear documentation of what worked (architectural improvements, IA-pooling) versus what showed limited transfer (denoising strategies)
 
-**Skills demonstrated:** Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
-This is clean markdown with:
+**Keywords:** Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
 
 ## Data
 
