@@ -1,6 +1,6 @@
 <h1 align="center">
-Protein Function Prediction (CAFA-6) <br>
-using Transformer-Based Deep Learning Models
+Application of Transformer-Based Deep Learning Models for <br>
+Protein Function Prediction (CAFA-6) 
 </h1>
 
 ## Overview
