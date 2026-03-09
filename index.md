@@ -5,19 +5,19 @@ using Transformer-Based Deep Learning Models
 
 ## Overview
 
-Predicting protein function from amino-acid sequence remains a central problem in computational biology, particularly due to the large number of proteins lacking experimental annotation. Recent transformer-based sequence models provide rich contextual representations that enable machine-learning approaches to address this problem at scale. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. The workflow combines transformer-derived embeddings, supervised machine-learning models, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning several orders of magnitude in frequency. Additional aggregation and post-processing procedures were introduced to account for the hierarchical structure of the Gene Ontology Consortium ontology and the statistical structure of ensemble predictions.
+Predicting protein function from amino-acid sequence remains a central problem in Computational Biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. The workflow combines transformer-derived embeddings, training supervised Machine Learning models, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were used to account for the statistical structure of ensemble predictions and hierarchical structure in the provided GO-DAG knowledge graphs.
 
 ## Key contributions
 
-- Systematic comparison of fixed embeddings vs. end-to-end transformer fine-tuning using ProtT5 and ESM2 architectures for Gene Ontology prediction.
-
-- Development of an asymmetric multi-head architecture linking Molecular Function (MF) and Cellular Component (CC) representations to the Biological Process (BP) head, improving BP performance without degrading MF/CC predictions.
-
-- Analysis of ensemble fold behavior, showing that a substantial fraction of signal appears in single or few folds; this motivated IA-aware pooling instead of standard mean or median aggregation.
-
-- Ontology-aware post-processing using GO-DAG propagation, improving biological consistency and increasing Fmax.
+- Systematic comparison of fixed embeddings vs. end-to-end transformer fine-tuning with unfrozen internal transformer layers using ProtT5 and ESM2 architectures.
 
 - Empirical analysis of label sparsity and information accretion (IA) demonstrating the strong long-tail structure of Gene Ontology annotations and its implications for model training.
+
+- Application of an asymmetric multi-head architecture linking Molecular Function (MF) and Cellular Component (CC) representations to the Biological Process (BP) head, improving BP performance without degrading MF/CC predictions.
+
+- Analysis of ensemble fold behavior, showing that a substantial fraction of signal appears in single or few folds, thus motivating IA-aware pooling instead of standard mean or median aggregation.
+
+- Ontology-aware post-processing using GO-DAG propagation, improving biological consistency and increasing Fmax.
 
 - Reference-guided denoising experiments using UniProt/GOA, revealing structured false-positive patterns and highlighting limitations of validation-only improvements for leaderboard transfer.
 
