@@ -1,39 +1,50 @@
 <h1 align="center">
 Application of Transformer-Based Deep Learning Models for <br>
-Protein Function Prediction (CAFA-6) 
+Protein Function Prediction (CAFA-6)
 </h1>
 
 ## Overview
 
-Predicting protein function from amino-acid sequence remains a central problem in Computational Biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the Critical Assessment of Functional Annotation 6 hosted on Google Kaggle. This work presents a systematic approach to protein function prediction developed for the CAFA-6 challenge, achieving top-30% public leaderboard performance through transformer-based architectures, novel ensemble methods, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were systematically compared, while model behavior was analyzed across labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were used to account for the statistical structure of ensemble predictions and hierarchical structure in the provided GO-DAG knowledge graphs.
+Predicting protein function from amino-acid sequence remains a central problem in computational biology, particularly due to the large number of proteins lacking experimental annotation. In this work, an end-to-end protein function prediction pipeline was developed for the **Critical Assessment of Functional Annotation 6 (CAFA-6)** challenge hosted on Google Kaggle.
 
-**Key results:**
+This study presents a systematic machine-learning approach to protein function prediction, achieving **top-30% leaderboard performance** through transformer-based architectures, ensemble learning, and ontology-aware post-processing. Fixed-embedding approaches and end-to-end fine-tuned transformer architectures were compared in a controlled experimental setting, while model behavior was analyzed across Gene Ontology labels spanning three orders of magnitude in frequency. Additional aggregation and post-processing procedures were developed to account for both the statistical structure of ensemble predictions and the hierarchical structure of the **Gene Ontology directed acyclic graph (GO-DAG)**.
 
-- Fine-tuned 3-billion parameter transformer models (ProtT5-XL) and smaller ESM2 models for protein sequence analysis.
-- Designed asymmetric neural architecture leveraging biological ontology structure (Gene Ontology)
-- Developed information-theoretic ensemble aggregation outperforming standard methods
-- Large-scale GPU computation on modern accelerators (NVIDIA A100, AMD MI300X)
+**Key results**
 
-**Approach:** End-to-end machine learning pipeline from raw sequences to Gene Ontology predictions, combining state-of-the-art transformers with domain-informed architectural choices and rigorous validation.
+- Fine-tuned **large transformer models** for protein sequences, including **ProtT5-XL (~3B parameters)** and smaller **ESM2 architectures**
+- Designed an **asymmetric neural architecture** leveraging the biological structure of the **Gene Ontology**
+- Developed **Information Accretion (IA)–aware ensemble aggregation**, outperforming conventional mean and median aggregation
+- Performed **large-scale GPU experimentation** on modern accelerators including **NVIDIA A100** and **AMD MI300X**
+
+**Approach**
+
+End-to-end machine-learning pipeline from raw protein sequences to Gene Ontology predictions, combining transformer-based sequence representations with domain-informed architectural design, ensemble diagnostics, and ontology-aware post-processing.
+
+---
 
 ## Technical Highlights
 
-**Systematic architecture exploration**
-- Compared fixed-embedding versus end-to-end transformer fine-tuning approaches
-- End-to-end fine-tuning provided consistent performance improvements across all ontology aspects
-- Characterized training dynamics for labels spanning three orders of magnitude in frequency
+### Systematic architecture exploration
 
-**Novel design contributions**
-- Asymmetric multi-head architecture where Molecular Function and Cellular Component inform Biological Process predictions
-- Information Accretion (IA)-aware ensemble pooling exploiting observed fold-support sparsity patterns
-- GO-DAG propagation for biologically-consistent hierarchical post-processing
+- Compared **fixed transformer embeddings** with **end-to-end transformer fine-tuning**
+- Demonstrated consistent performance improvements from fine-tuning across all Gene Ontology aspects
+- Characterized training behavior for labels spanning **three orders of magnitude in frequency**
 
-**Rigorous validation**
-- Systematic ablation studies quantified each component's contribution
-- Analysis of validation-test transfer challenges (e.g., reference-guided denoising)
-- Clear documentation of what worked (architectural improvements, IA-pooling) versus what showed limited transfer (denoising strategies)
+### Novel design contributions
 
-**Keywords:** Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
+- **Asymmetric multi-head architecture** where Molecular Function and Cellular Component representations inform Biological Process predictions
+- **Information Accretion (IA)–aware ensemble pooling** motivated by observed sparsity of fold support
+- **GO-DAG propagation** enabling biologically consistent hierarchical post-processing
+
+### Rigorous validation
+
+- Systematic ablation studies quantifying the contribution of architectural and post-processing components
+- Diagnostic analysis of **validation–test transfer challenges**, including reference-guided denoising
+- Clear separation of methods with strong empirical benefit (fine-tuning, IA pooling) and methods with limited leaderboard transfer
+
+---
+
+**Keywords:** transformer fine-tuning, multi-label learning, extreme label imbalance, ensemble learning, ontology-aware machine learning, systematic experimentation, GPU-scale deep learning
 
 ## Data
 
