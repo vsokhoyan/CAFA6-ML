@@ -46,21 +46,8 @@ End-to-end machine-learning pipeline from raw protein sequences to Gene Ontology
 
 **Keywords:** transformer fine-tuning, multi-label learning, extreme label imbalance, ensemble learning, ontology-aware machine learning, systematic experimentation, GPU-scale deep learning
 
-## Data
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="54%">
-  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="44%">
-</div>
-
-<p align="center"><em>
-Figure E1 (left): Cumulative coverage of positive annotations as a function of the number of retained Gene Ontology terms (top-K by frequency) for the three GO aspects: Molecular Function (F), Biological Process (P), and Cellular Component (C). The curves illustrate the pronounced long-tail structure of GO annotations. A relatively small number of frequent terms explains the majority of positive annotations, particularly for Molecular Function and Cellular Component. In contrast, Biological Process exhibits a substantially heavier tail, where thousands of terms contribute small numbers of annotations. Vertical reference lines (K = 1000, 2500, 4000) highlight representative operating points used during model design.
-<br><br>
-Figure E2 (right): Density of GO terms in the plane of information accretion (IA) and annotation frequency (log₁₀ positives per term). Color indicates log₁₀ counts of terms in each bin. The plot shows that terms with higher information content (higher IA, corresponding to more specific biological functions) occur predominantly at low annotation frequencies. This empirical relationship provides a principled link between ontology specificity and data sparsity and motivates IA-aware calibration and aggregation strategies used in later stages of the pipeline.
-</em></p>
 
 ## Data
-
 ### Dataset summary
 
 | Component | Description |
@@ -116,6 +103,17 @@ This prospective evaluation scheme introduces a natural **distribution shift** b
 ### Exploratory data analysis
 
 Before model training, label and sequence statistics were analyzed to characterize class imbalance, annotation sparsity, and potential constraints on model design. This analysis helps avoid purely heuristic modeling choices and informs later architectural and post-processing decisions.
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="54%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="44%">
+</div>
+
+<p align="center"><em>
+Figure E1 (left): Cumulative coverage of positive annotations as a function of the number of retained Gene Ontology terms (top-K by frequency) for the three GO aspects: Molecular Function (F), Biological Process (P), and Cellular Component (C). The curves illustrate the pronounced long-tail structure of GO annotations. A relatively small number of frequent terms explains the majority of positive annotations, particularly for Molecular Function and Cellular Component. In contrast, Biological Process exhibits a substantially heavier tail, where thousands of terms contribute small numbers of annotations. Vertical reference lines (K = 1000, 2500, 4000) highlight representative operating points used during model design.
+<br><br>
+Figure E2 (right): Density of GO terms in the plane of information accretion (IA) and annotation frequency (log₁₀ positives per term). Color indicates log₁₀ counts of terms in each bin. The plot shows that terms with higher information content (higher IA, corresponding to more specific biological functions) occur predominantly at low annotation frequencies. This empirical relationship provides a principled link between ontology specificity and data sparsity and motivates IA-aware calibration and aggregation strategies used in later stages of the pipeline.
+</em></p>
 
 The label-frequency spectra reveal an **extreme long-tail distribution** across all GO aspects (Figure E1). A relatively small number of frequent terms explains a large fraction of positive annotations, while thousands of terms occur only rarely. This imbalance implies that naive multi-label training is dominated by negative examples and that predictive performance differs substantially between frequent “head” terms and rare “tail” terms.
 
