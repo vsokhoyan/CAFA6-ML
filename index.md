@@ -14,28 +14,27 @@ Predicting protein function from amino-acid sequence remains a central problem i
 - Developed information-theoretic ensemble aggregation outperforming standard methods
 - Large-scale GPU computation on modern accelerators (NVIDIA A100, AMD MI300X)
 
-Approach: End-to-end machine learning pipeline from raw sequences to Gene Ontology predictions, combining state-of-the-art transformers with domain-informed architectural choices and rigorous validation.
-Technical Highlights
+**Approach:** End-to-end machine learning pipeline from raw sequences to Gene Ontology predictions, combining state-of-the-art transformers with domain-informed architectural choices and rigorous validation.
 
-Systematic architecture exploration
+## Technical Highlights
 
-Compared fixed-embedding versus end-to-end transformer fine-tuning approaches
-End-to-end fine-tuning provided consistent performance improvements across all ontology aspects
-Characterized training dynamics for labels spanning three orders of magnitude in frequency
+**Systematic architecture exploration**
+- Compared fixed-embedding versus end-to-end transformer fine-tuning approaches
+- End-to-end fine-tuning provided consistent performance improvements across all ontology aspects
+- Characterized training dynamics for labels spanning three orders of magnitude in frequency
 
-Novel design contributions
+**Novel design contributions**
+- Asymmetric multi-head architecture where Molecular Function and Cellular Component inform Biological Process predictions
+- Information Accretion (IA)-aware ensemble pooling exploiting observed fold-support sparsity patterns
+- GO-DAG propagation for biologically-consistent hierarchical post-processing
 
-Asymmetric multi-head architecture where Molecular Function and Cellular Component inform Biological Process predictions
-Information Accretion (IA)-aware ensemble pooling exploiting observed fold-support sparsity patterns
-GO-DAG propagation for biologically-consistent hierarchical post-processing
+**Rigorous validation**
+- Systematic ablation studies quantified each component's contribution
+- Analysis of validation-test transfer challenges (e.g., reference-guided denoising)
+- Clear documentation of what worked (architectural improvements, IA-pooling) versus what showed limited transfer (denoising strategies)
 
-Rigorous validation
-
-Systematic ablation studies quantified each component's contribution
-Analysis of validation-test transfer challenges (e.g., reference-guided denoising)
-Clear documentation of what worked (architectural improvements, IA-pooling) versus what showed limited transfer (denoising strategies)
-
-Skills demonstrated: Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
+**Skills demonstrated:** Transformer fine-tuning, multi-task learning, extreme label imbalance handling, ensemble methods, ontological reasoning, systematic experimentation, GPU-scale computation, production-quality validation practices.
+This is clean markdown with:
 
 ## Data
 
