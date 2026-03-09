@@ -54,23 +54,78 @@ End-to-end machine-learning pipeline from raw protein sequences to Gene Ontology
 </div>
 
 <p align="center"><em>
-Figure E1 (left). ....
+Figure E1 (left): Cumulative coverage of positive annotations as a function of the number of retained Gene Ontology terms (top-K by frequency) for the three GO aspects: Molecular Function (F), Biological Process (P), and Cellular Component (C). The curves illustrate the pronounced long-tail structure of GO annotations. A relatively small number of frequent terms explains the majority of positive annotations, particularly for Molecular Function and Cellular Component. In contrast, Biological Process exhibits a substantially heavier tail, where thousands of terms contribute small numbers of annotations. Vertical reference lines (K = 1000, 2500, 4000) highlight representative operating points used during model design.
 <br><br>
-Figure E2 (right). ....
+Figure E2 (right): Density of GO terms in the plane of information accretion (IA) and annotation frequency (log₁₀ positives per term). Color indicates log₁₀ counts of terms in each bin. The plot shows that terms with higher information content (higher IA, corresponding to more specific biological functions) occur predominantly at low annotation frequencies. This empirical relationship provides a principled link between ontology specificity and data sparsity and motivates IA-aware calibration and aggregation strategies used in later stages of the pipeline.
 </em></p>
 
+## Data
 
-.....
+### Dataset summary
 
-Before training, I inspected label and sequence statistics to understand class imbalance, annotation sparsity, and whether a restricted label vocabulary would be justified. This avoids “blind” modeling and directly informs later architectural and post-processing choices.
+| Component | Description |
+|---|---|
+| Training proteins | ~82,000 sequences with experimentally supported GO annotations |
+| Test superset | Proteins without experimental annotations at submission time |
+| Ontology | Gene Ontology (GO) directed acyclic graph |
+| GO aspects | Molecular Function (MF), Biological Process (BP), Cellular Component (CC) |
+| Evaluation metric | Information-accretion weighted F-measure (Fmax) |
+| Data source | UniProtKB (Swiss-Prot), release June 2025 |
 
-The label-frequency spectra reveal an extreme long-tail structure across all GO aspects, implying that naive multi-label training is dominated by negatives and that performance differs strongly between frequent “head” terms and rare “tail” terms. The top-K coverage and threshold plots show that, especially for Biological Process, a relatively small subset of labels already explains a large fraction of positive annotations, while labels beyond K≈2000–3000 become extremely sparse. This motivates training on a controlled head vocabulary and treating the tail separately.
+The dataset used in this study originates from the **CAFA-6 (Critical Assessment of Functional Annotation)** competition hosted on Kaggle. The task consists of predicting **Gene Ontology (GO)** functional annotations for proteins based solely on their amino-acid sequences.
 
-The IA–frequency density further shows that high-information (more specific) terms are typically rare, providing a principled link between ontology specificity and data sparsity. This observation later motivates IA-aware calibration and GO-DAG–based aggregation rules.
+Model performance in the competition is evaluated using the **maximum information-accretion weighted F-measure (Fmax)**, computed from weighted precision and recall across the three GO subontologies: **Molecular Function (MF)**, **Biological Process (BP)**, and **Cellular Component (CC)**.
 
-Finally, the wide distribution of protein lengths and the sparse per-protein annotation counts highlight practical constraints for transformer fine-tuning (memory, truncation) and explain why fold-level variance and tail performance require special attention.
+The training data are derived from **experimentally validated GO annotations** curated in the UniProtKB database (release June 2025). Each protein sequence in the training set is associated with one or more GO terms supported by experimental or curated evidence.
 
-Together, these diagnostics establish the statistical structure of the CAFA-6 dataset and motivate the modeling, aggregation, and denoising strategies described in the following sections.
+---
+
+### Data sources
+
+The dataset consists of the following components:
+
+- **Protein sequences**  
+  Amino-acid sequences in FASTA format (`train_sequences.fasta`).
+
+- **GO term annotations**  
+  Protein–term assignments used as ground-truth labels (`train_terms.tsv`).
+
+- **Taxonomic information**  
+  Species identifiers for each protein (`train_taxonomy.tsv`).
+
+- **Ontology structure**  
+  The Gene Ontology graph (`go-basic.obo`), describing hierarchical relationships between functional terms.
+
+- **Information accretion weights**  
+  Term-specific weights used in the evaluation metric (`IA.tsv`).
+
+The Gene Ontology itself forms a **directed acyclic graph (GO-DAG)** whose nodes represent functional descriptors connected by biological relationships such as *is_a* or *part_of*. The ontology is organized into three subgraphs corresponding to the MF, BP, and CC aspects of protein function.
+
+---
+
+### Training and evaluation setup
+
+The training dataset contains approximately **82k proteins** with experimentally supported annotations across the three GO aspects. 
+
+Predictions are generated for a **test superset of protein sequences** that initially lack experimental annotations. Over time, a subset of these proteins accumulates experimentally validated annotations and forms the **hidden evaluation test set**.
+
+This prospective evaluation scheme introduces a natural **distribution shift** between validation data and final evaluation data. As a result, the competition emphasizes methods that generalize well rather than those optimized solely for leaderboard performance.
+
+---
+
+### Exploratory data analysis
+
+Before model training, label and sequence statistics were analyzed to characterize class imbalance, annotation sparsity, and potential constraints on model design. This analysis helps avoid purely heuristic modeling choices and informs later architectural and post-processing decisions.
+
+The label-frequency spectra reveal an **extreme long-tail distribution** across all GO aspects (Figure E1). A relatively small number of frequent terms explains a large fraction of positive annotations, while thousands of terms occur only rarely. This imbalance implies that naive multi-label training is dominated by negative examples and that predictive performance differs substantially between frequent “head” terms and rare “tail” terms.
+
+The cumulative coverage curves further show that, particularly for the **Biological Process (BP)** ontology, a limited subset of labels already explains a large portion of annotations, while terms beyond approximately **K ≈ 2000–3000** become extremely sparse. This observation motivates training on a controlled head vocabulary while treating the tail separately.
+
+The joint distribution of **information accretion (IA)** and annotation frequency (Figure E2) demonstrates that highly specific terms typically correspond to rare labels. This provides a quantitative link between ontology specificity and statistical sparsity and motivates IA-aware calibration and aggregation strategies applied in later stages of the pipeline.
+
+Finally, the dataset exhibits a wide distribution of **protein sequence lengths** and **per-protein annotation counts**. These properties impose practical constraints for transformer-based models, including sequence truncation and memory limitations during fine-tuning, and help explain increased variance in model predictions for rare ontology terms.
+
+Together, these diagnostics establish the statistical structure of the CAFA-6 dataset and motivate the modeling, aggregation, and post-processing strategies described in the following sections.
 
 ### Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning
 
