@@ -153,6 +153,39 @@ Again, the results across the five folds remain highly consistent. However, **en
 
 A direct comparison between the fixed and tuned configurations is shown in the following figure.
 
+## Experimental configuration
+
+| Section          | Parameter               | Value                 | Notes                                                       |
+| ---------------- | ----------------------- | --------------------- | ----------------------------------------------------------- |
+| Model            | Backbone                | ProtT5-XL-UniRef50    | `Rostlab/prot_t5_xl_uniref50`                               |
+|                  | Max token length        | 1 024                 | sequences truncated to 1 022 AAs                            |
+|                  | Unfrozen encoder blocks | 2 (last)              | all earlier weights frozen                                  |
+|                  | Gradient checkpointing  | disabled              | stability fix for MI300X / ROCm                             |
+| Heads            | Pooling                 | Attention pooling     | per-aspect learned scorer → weighted sum                    |
+|                  | Head architecture       | MLP (2-layer)         | d_model → 512 → out_dim                                     |
+|                  | Head dropout            | 0.15                  | applied before each linear layer                            |
+|                  | Attention pool dropout  | 0.01                  |                                                             |
+|                  | Asymmetric P head       | yes (detach)          | F & C pooled representations bridge into P head (stop-grad) |
+|                  | P bridge dim            | 128                   | projected dim of F/C bridge vectors                         |
+|                  | P MLP hidden            | 256                   |                                                             |
+|                  | P output terms (P_K)    | 2 000                 | top-K GO-P terms retained                                   |
+| Optimisation     | Optimizer               | AdamW                 |                                                             |
+|                  | Encoder LR              | 1.5 × 10⁻⁴            |                                                             |
+|                  | Head LR                 | 2.0 × 10⁻³            |                                                             |
+|                  | Weight decay            | 0.01                  | encoder params only                                         |
+|                  | LR schedule             | cosine decay          | linear warmup → cosine                                      |
+|                  | Warmup fraction         | 5 %                   | of total optimiser steps                                    |
+|                  | Epochs                  | 10                    |                                                             |
+|                  | Batch size              | 32                    | per GPU                                                     |
+|                  | Gradient accumulation   | 2                     | effective batch = 64                                        |
+|                  | Precision               | bfloat16              | autocast on GPU                                             |
+|                  | P loss weight           | 1.0                   | loss = L_F + 1.0·L_P + L_C                                  |
+| Cross-validation | Strategy                | Stratified 5-fold     | stratified by taxonomy                                      |
+|                  | Rare taxon threshold    | 5                     | taxa with < 5 samples → 'RARE' bucket                       |
+|                  | Fold shuffle            | yes                   | seed = 42                                                   |
+| Validation       | Fast val size           | 8 192                 | random subset; evaluated every 1 000 opt steps              |
+|                  | Full val frequency      | every 2 epochs        | full OOF set                                                |
+|                  | Model selection metric  | macro Fmax (fast val) |                                                             |
 ---
 
 <div style="display: flex; gap: 10px;">
@@ -224,96 +257,6 @@ The experiments in this section lead to three main conclusions:
 2. **Results are stable across the five cross-validation folds**, indicating robust optimization behavior and reliable performance estimates.
 
 3. **Model strength and fine-tuning strategy interact**: smaller models such as ESM2 may benefit more strongly from full fine-tuning, but a stronger pretrained backbone such as ProtT5 can still achieve superior absolute performance even with partial layer unfreezing.
-
-
-
-
-### OLD: Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning: OLD
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/cafa6_architecture_fixed.png" width="48%">
-  <img src="figures/cafa6_prott5_finetuning.png" width="50%">
-  <p align="center"><em>
-Figure 2. Neural network architecture.
-</em></p>
-</div>
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_fixed.png" width="98%">
-  <p align="center"><em>
-Figure 2. Neural network architecture.
-</em></p>
-</div>
-
-## Experimental configuration
-
-| Section          | Parameter               | Value                 | Notes                                                       |
-| ---------------- | ----------------------- | --------------------- | ----------------------------------------------------------- |
-| Model            | Backbone                | ProtT5-XL-UniRef50    | `Rostlab/prot_t5_xl_uniref50`                               |
-|                  | Max token length        | 1 024                 | sequences truncated to 1 022 AAs                            |
-|                  | Unfrozen encoder blocks | 2 (last)              | all earlier weights frozen                                  |
-|                  | Gradient checkpointing  | disabled              | stability fix for MI300X / ROCm                             |
-| Heads            | Pooling                 | Attention pooling     | per-aspect learned scorer → weighted sum                    |
-|                  | Head architecture       | MLP (2-layer)         | d_model → 512 → out_dim                                     |
-|                  | Head dropout            | 0.15                  | applied before each linear layer                            |
-|                  | Attention pool dropout  | 0.01                  |                                                             |
-|                  | Asymmetric P head       | yes (detach)          | F & C pooled representations bridge into P head (stop-grad) |
-|                  | P bridge dim            | 128                   | projected dim of F/C bridge vectors                         |
-|                  | P MLP hidden            | 256                   |                                                             |
-|                  | P output terms (P_K)    | 2 000                 | top-K GO-P terms retained                                   |
-| Optimisation     | Optimizer               | AdamW                 |                                                             |
-|                  | Encoder LR              | 1.5 × 10⁻⁴            |                                                             |
-|                  | Head LR                 | 2.0 × 10⁻³            |                                                             |
-|                  | Weight decay            | 0.01                  | encoder params only                                         |
-|                  | LR schedule             | cosine decay          | linear warmup → cosine                                      |
-|                  | Warmup fraction         | 5 %                   | of total optimiser steps                                    |
-|                  | Epochs                  | 10                    |                                                             |
-|                  | Batch size              | 32                    | per GPU                                                     |
-|                  | Gradient accumulation   | 2                     | effective batch = 64                                        |
-|                  | Precision               | bfloat16              | autocast on GPU                                             |
-|                  | P loss weight           | 1.0                   | loss = L_F + 1.0·L_P + L_C                                  |
-| Cross-validation | Strategy                | Stratified 5-fold     | stratified by taxonomy                                      |
-|                  | Rare taxon threshold    | 5                     | taxa with < 5 samples → 'RARE' bucket                       |
-|                  | Fold shuffle            | yes                   | seed = 42                                                   |
-| Validation       | Fast val size           | 8 192                 | random subset; evaluated every 1 000 opt steps              |
-|                  | Full val frequency      | every 2 epochs        | full OOF set                                                |
-|                  | Model selection metric  | macro Fmax (fast val) |                                                             |
-
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png" width="98%">
-  <p align="center"><em>
-Figure 2. Neural network architecture.
-</em></p>
-</div>
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="98%">
-  <p align="center"><em>
-Figure 2. Mean validation Fmax (top row) and AP (bottom row) across 5 folds for fixed ProtT5 embeddings versus end-to-end fine-tuning of the last two transformer blocks. Fine-tuning consistently improves performance across all ontologies, with particularly strong gains for Biological Process (P). Tuned models converge faster and reach higher plateaus despite shorter training schedules, indicating meaningful adaptation of internal representations beyond downstream classifiers.
-</em></p>
-</div>
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/prott5_batch_compare_grid.png" width="98%">
-  <p align="center"><em>
-Figure 2. The effect of the batch size ...
-</em></p>
-</div>
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/Prott5_ESM2_nice_black.png" width="98%">
-  <p align="center"><em>
-Figure 2. ESM2 fine-tuning.
-</em></p>
-</div>
-
-<div style="display: flex; gap: 10px;">
-  <img src="figures/ESM2_full.png" width="98%">
-  <p align="center"><em>
-Figure 2. ESM2 fine-tuning.
-</em></p>
-</div>
 
 ### Training on rare labels vs. main training body
 
