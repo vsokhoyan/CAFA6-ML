@@ -70,8 +70,8 @@ Performance is measured using information-accretion weighted F-measure (Fmax), w
 ### Key Data Characteristics
 
 <p align="center"> 
-  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="53%">
-  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="46%">
+  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="55%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="44%">
 </p>
 
 <p align="center"><em>
