@@ -90,7 +90,145 @@ Performance is measured using information-accretion weighted F-measure (Fmax), w
 
 These observations motivated the asymmetric architecture design, IA-aware aggregation strategy, and GO-DAG post-processing described in subsequent sections.
 
+
 ### Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning
+
+A central question in this study was whether protein function prediction for the CAFA-6 task is best addressed using **fixed transformer embeddings** with downstream classifiers or by **end-to-end fine-tuning of the transformer backbone**. Both approaches were investigated systematically using the ProtT5-XL protein language model and, in a separate comparison, the ESM2 architecture.
+
+In the fixed-embedding configuration, protein sequences are first encoded by the pretrained transformer model, and the resulting sequence representations are treated as frozen inputs to task-specific classification heads. This approach is computationally efficient and widely used in bioinformatics applications, since the expensive transformer inference step is performed only once and the downstream optimization is restricted to lightweight neural layers.
+
+In the end-to-end configuration, the internal transformer representation is allowed to adapt to the downstream task by **unfreezing selected transformer layers** during training. In the ProtT5 configuration used here, the **last two transformer blocks were unfrozen**, while the earlier blocks remained frozen to preserve the pretrained representation and reduce computational cost. This strategy provides a compromise between full model retraining and purely frozen embeddings.
+
+---
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/cafa6_architecture_fixed.png" width="48%">
+  <img src="figures/cafa6_prott5_finetuning.png" width="50%">
+</div>
+
+<p align="center"><em>
+Figure 2. Model architecture used for protein function prediction.  
+Left: multi-head prediction architecture operating on fixed ProtT5 embeddings.  
+Right: end-to-end fine-tuning scheme in which the final transformer blocks of ProtT5 are unfrozen while earlier layers remain frozen. In both cases the sequence representation is processed by attention-based pooling followed by ontology-specific MLP heads for Molecular Function (F), Biological Process (P), and Cellular Component (C).
+</em></p>
+
+A key architectural component is the **asymmetric coupling between ontology heads**. The predictions for Molecular Function (F) and Cellular Component (C) are allowed to feed into the Biological Process (P) branch through learned projection layers. However, the reverse direction is blocked by a stop-gradient operation. Empirically, experiments (not shown here) demonstrated that the Biological Process ontology benefits from additional contextual information derived from F and C predictions, whereas introducing symmetric connections often degraded performance for F and C. This asymmetric design therefore reflects both the statistical structure of the dataset and the biological interpretation that biological processes often depend on molecular functions and cellular localization.
+
+---
+
+### Fixed embeddings baseline
+
+The fixed-embedding configuration serves as the baseline for all subsequent experiments. In this setup, ProtT5 embeddings are computed once for each sequence and the classification heads are trained independently.
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_fixed.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 3. Validation performance for the fixed-embedding ProtT5 baseline across five cross-validation folds.  
+Top row: Fmax curves for Molecular Function (F), Biological Process (P), and Cellular Component (C).  
+Bottom row: Average Precision (AP).  
+Colored curves correspond to individual folds, while the dashed line indicates the mean performance across folds. The consistency between folds indicates stable optimization behavior and limited sensitivity to the specific fold split.
+</em></p>
+
+Across all three ontologies the five folds show **highly consistent training behavior**, with only modest variance between folds. This indicates that the stratified taxonomy-based cross-validation provides reliable estimates of generalization performance.
+
+---
+
+### End-to-end ProtT5 fine-tuning
+
+The same training protocol was applied to the end-to-end configuration with two transformer layers unfrozen.
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 4. Validation curves for the end-to-end tuned ProtT5 model with two transformer layers unfrozen.  
+Top row: Fmax. Bottom row: Average Precision.  
+As in the fixed-embedding case, individual fold curves are shown together with the mean across folds.
+</em></p>
+
+Again, the results across the five folds remain highly consistent. However, **end-to-end tuning systematically improves both Fmax and AP across all ontologies**. The largest improvements are observed for the **Biological Process ontology**, which is also the most difficult prediction task due to the strong label sparsity and hierarchical complexity.
+
+A direct comparison between the fixed and tuned configurations is shown in the following figure.
+
+---
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 5. Direct comparison between fixed ProtT5 embeddings and end-to-end fine-tuning (two unfrozen transformer blocks).  
+Fine-tuning improves both Fmax and AP across all three ontologies and reaches higher validation plateaus despite shorter effective training schedules.
+</em></p>
+
+These results indicate that allowing the internal transformer representation to adapt to the CAFA-6 task yields meaningful improvements beyond what can be achieved by training only downstream classification heads.
+
+---
+
+### Effect of batch size
+
+Since transformer fine-tuning is computationally expensive, additional experiments were performed to evaluate the effect of different effective batch sizes.
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/prott5_batch_compare_grid.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 6. Influence of effective batch size on validation performance for the end-to-end ProtT5 configuration.  
+Smaller batch sizes tend to produce slightly higher validation metrics, although at the cost of longer training times and less efficient GPU utilization.
+</em></p>
+
+While smaller batches can provide marginal improvements in optimization dynamics, the practical constraints of fine-tuning large transformer models often favor larger effective batch sizes.
+
+---
+
+### Comparison of ProtT5 and ESM2 fine-tuning strategies
+
+To determine whether the observed improvement from end-to-end tuning depends strongly on the backbone architecture, additional experiments were performed using **ESM2-small**, which was trained with **full end-to-end fine-tuning** rather than partial unfreezing.
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/Prott5_ESM2_nice_black.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 7. Comparison of fine-tuning strategies for ProtT5 and ESM2.  
+ProtT5 uses partial fine-tuning with two unfrozen layers, while ESM2 is trained end-to-end. Despite stronger relative improvements for ESM2 compared to its fixed-embedding baseline, ProtT5 still achieves higher absolute performance due to its stronger pretrained representation.
+</em></p>
+
+The results demonstrate an interesting pattern. For ESM2, **end-to-end tuning produces a larger relative improvement compared to its fixed-embedding baseline**, indicating that the model benefits strongly from task-specific adaptation. However, the final performance remains below that of ProtT5, reflecting the stronger pretrained representation of the larger ProtT5 model.
+
+This observation highlights the interplay between **pretraining quality and fine-tuning strategy**: while smaller models may gain more from full fine-tuning, larger pretrained models can still outperform them even with only partial adaptation.
+
+---
+
+<div style="display: flex; gap: 10px;">
+  <img src="figures/ESM2_full.png" width="98%">
+</div>
+
+<p align="center"><em>
+Figure 8. Fixed-embedding versus end-to-end tuning for the ESM2 model.  
+End-to-end training yields substantial improvements across all ontologies compared with the frozen-embedding baseline, confirming the general benefit of transformer fine-tuning for this task.
+</em></p>
+
+---
+
+### Summary
+
+The experiments in this section lead to three main conclusions:
+
+1. **End-to-end transformer fine-tuning consistently improves protein function prediction performance** compared with training classifiers on fixed embeddings.
+
+2. **Results are stable across the five cross-validation folds**, indicating robust optimization behavior and reliable performance estimates.
+
+3. **Model strength and fine-tuning strategy interact**: smaller models such as ESM2 may benefit more strongly from full fine-tuning, but a stronger pretrained backbone such as ProtT5 can still achieve superior absolute performance even with partial layer unfreezing.
+
+
+
+
+### OLD: Training Machine Learning models: Fixed embeddings vs. end-to-end transformer fine-tuning: OLD
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/cafa6_architecture_fixed.png" width="48%">
