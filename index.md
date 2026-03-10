@@ -260,25 +260,53 @@ The experiments in this section lead to three main conclusions:
 
 ### Training on rare labels vs. main training body
 
+The label-frequency analysis presented earlier shows that the Biological Process (P) ontology exhibits a particularly strong long-tail distribution. A large fraction of labels appears only rarely in the training data, while a smaller subset of frequent labels accounts for most positive annotations. This raises an important question for model optimization: whether the global validation metrics are dominated by the frequent labels in the head of the distribution or whether the rare-label regime follows a different training dynamics.
+
+To investigate this effect, additional diagnostics were performed by separating the validation metrics into three complementary evaluation subsets for the P ontology:
+
+1. **Full evaluation** – all labels included in the analyzed vocabulary.
+2. **Base (head) region** – labels ranked approximately **1–2000** by frequency.
+3. **Tail region** – rare labels in the range **2000–3400**.
+
+This decomposition allows the learning dynamics of the rare-label regime to be analyzed independently of the dominant head region.
+
 <div style="display: flex; gap: 10px;">
   <img src="figures/P_Fmax.png" width="33%">
   <img src="figures/P_base_Fmax.png" width="33%">
   <img src="figures/P_tail_Fmax.png" width="33%">
-  <p align="center"><em>
-Figure 2. Diagnostic comparison across three validation cases for Fmax.
+</div>
+
+<p align="center"><em>
+Figure X. Training dynamics of Fmax for the Biological Process ontology across five cross-validation folds.  
+Left: full evaluation across all analyzed labels.  
+Center: head region (labels ranked 1–2000 by frequency).  
+Right: tail region (labels 2000–3400).  
+Colored curves correspond to individual folds and the dashed line shows the mean across folds. The diagnostics reveal that the rare-label tail continues to improve later in training, entering the diminishing-returns regime noticeably later than the main training body.
 </em></p>
 
-</div>
+The Fmax curves show that the global validation signal closely follows the behavior of the head region, which dominates the total number of annotations. In contrast, the tail region exhibits a slightly delayed convergence pattern, with improvements continuing even when the head region has already begun to plateau.
+
+A similar effect is visible in the evolution of **Average Precision (AP)**.
 
 <div style="display: flex; gap: 10px;">
   <img src="figures/P_AP.png" width="33%">
   <img src="figures/P_base_AP.png" width="33%">
   <img src="figures/P_tail_AP.png" width="33%">
-
-  <p align="center"><em>
-Figure 2. Diagnostic comparison across three validation cases for AP. 
-</em></p>
 </div>
+
+<p align="center"><em>
+Figure Y. Training dynamics of Average Precision (AP) for the same three validation subsets of the P ontology.  
+Left: full evaluation.  
+Center: head region (labels 1–2000).  
+Right: tail region (labels 2000–3400).  
+While the head region approaches a plateau earlier, AP continues to improve over a longer training interval, particularly for the rare-label tail.
+</em></p>
+
+Several observations follow from these diagnostics. First, the learning dynamics of the rare-label regime differ from those of the frequent labels that dominate the global metrics. The rare-label tail often continues to improve after the head region has already reached a plateau in Fmax. Second, the effect is even more pronounced for **Average Precision**, which measures ranking quality and remains sensitive to improvements even when the classification threshold–based metric (Fmax) shows diminishing returns.
+
+These results suggest that stopping criteria based solely on the global validation metric may slightly undertrain the rare-label regime. In practice, the desired trade-off between overall score optimization and rare-label performance therefore depends on the intended application. For example, applications emphasizing the discovery of specific biological processes may benefit from slightly longer training schedules than those suggested by the aggregate validation signal.
+
+Overall, these diagnostics reinforce the broader interpretation of the CAFA-6 task: the dataset contains multiple statistical regimes—frequent labels, rare labels, and ontology-specific structures—that exhibit different optimization dynamics during training. Explicitly separating these regimes provides additional insight into model behavior and helps guide architectural and training decisions in later stages of the pipeline.
 
 ### Aggregation
 
