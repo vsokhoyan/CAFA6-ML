@@ -308,33 +308,38 @@ These results suggest that stopping criteria based solely on the global validati
 
 Overall, these diagnostics reinforce the broader interpretation of the CAFA-6 task: the dataset contains multiple statistical regimes—frequent labels, rare labels, and ontology-specific structures—that exhibit different optimization dynamics during training. Explicitly separating these regimes provides additional insight into model behavior and helps guide architectural and training decisions in later stages of the pipeline.
 
-### Aggregation
+### Aggregation and fold-support structure (P ontology)
 
-Fold support and why aggregation matters (P aspect)
+Model ensembles are typically aggregated using simple statistics such as the mean or median across folds. While these approaches stabilize predictions, they implicitly assume that the signal appears consistently across ensemble members. To evaluate whether this assumption holds for the CAFA-6 Biological Process (P) predictions, the fold-support structure of the five-fold ensemble was analyzed.
 
-A five-fold model ensemble can be aggregated in multiple ways (mean, median, or more structured pooling). To understand how aggregation affects the retained signal, we analyzed—on the held-out test set—the fold support of protein–term events that pass a fixed “base gate” in at least one fold (same score window and IA minimum across all analyses). For each event, we recorded (i) the number of folds k (0–5) that pass the base gate, and (ii) the exact subset of folds that fired.
+For each predicted protein–term event that passed a fixed base gate in at least one fold, two quantities were recorded:  
+(i) the number of folds *k* (0–5) that produced a passing score, and  
+(ii) the exact subset of folds that fired.
 
-<div style="display: flex; gap: 10px;"> <img src="figures/P_fold_combo_top12.png" width="48%"> <img src="figures/P_single_fold_by_IAband.png" width="48%"> </div> <p style="margin-top: 6px; font-size: 0.95em;"> <b>Figure 1.</b> <i>Left:</i> Most frequent fold-combinations (top 12) for base-passing events in the P aspect; single-fold patterns {0}…{4} appear nearly as often as full five-fold agreement {0,1,2,3,4}, revealing substantial fold-sparse signal. <i>Right:</i> Single-fold firing (k=1) by IA band and fold index, showing that sparse-support events are common and not dominated by one particular fold. </p>
+<div style="display: flex; gap: 10px;">
+<img src="figures/P_fold_combo_top12.png" width="48%">
+<img src="figures/P_single_fold_by_IAband.png" width="48%">
+</div>
 
-For the Biological Process aspect (P), fold support is notably sparse. Figure 1 (left) shows that single-fold firing patterns {0}, {1}, {2}, {3}, {4} are among the most frequent outcomes—comparable in scale to full five-fold agreement {0,1,2,3,4}. Figure 1 (right) quantifies this sparsity via k-support: among events that pass in at least one fold, k=1 constitutes a large share, while k=5 constitutes a much smaller share. This immediately suggests that aggregation rules that implicitly require multi-fold consensus can suppress a substantial portion of P signal.
+<p align="center"><em>
+Figure X. Fold-support structure of P predictions passing the base gate in at least one fold.  
+<b>Left:</b> Most frequent fold-combinations (top 12). Single-fold firing patterns {0}…{4} appear nearly as often as full five-fold agreement {0,1,2,3,4}, indicating that many events are supported by only one fold.  
+<b>Right:</b> Frequency of single-fold firing (*k = 1*) stratified by information-accretion (IA) band and fold index. Sparse-support events occur across all folds and are not dominated by a single model instance.
+</em></p>
 
-Mean aggregation is often used to stabilize ensembles, but it has a specific failure mode when fold support is sparse: a strong score in one fold can be diluted by weaker scores in the remaining folds. We measured this effect explicitly by comparing any-fold passing vs mean-of-5 passing under the same base gate. Events that pass in at least one fold but fail after mean-of-5 are labeled LOST (“washout”). Because the mean cannot exceed the per-fold maximum, the opposite case (GAINED) is mathematically impossible when applying the same threshold.
+The analysis reveals a strongly **fold-sparse signal structure**. Single-fold firing events are nearly as frequent as full consensus events across all folds. This implies that a substantial fraction of valid predictions originates from localized evidence in only one or two folds.
 
-Figure 2 (left) shows that washout is substantial in P: a large number of events that pass in at least one fold fall below the base gate after averaging. Stratifying by information content (IA) indicates that washout is concentrated in the low–mid IA regime, i.e., it is not restricted to only the most extreme rare-term tail. This provides a mechanistic explanation for why simple averaging can be detrimental in P: a large portion of events are supported by only 1–2 folds, and averaging pushes many of these below the gate.
+Such sparsity has important consequences for ensemble aggregation. Mean aggregation can dilute strong signals when only one fold produces a high score while the remaining folds produce lower scores. Median aggregation is even more restrictive: with five folds, it effectively requires consensus from at least three folds, which suppresses many sparse-support events.
 
-Median aggregation is even more restrictive in this setting. With five folds, the median behaves like a consensus filter: if fewer than ~3 folds produce a high score, the median remains low. Since P contains a large mass of k=1–2 events (Figure 2, right), median aggregation disproportionately suppresses them compared to the mean.
+To mitigate this effect, an **information-content–aware aggregation strategy (IA pooling)** was used. The aggregation rule is adapted according to the information accretion (IA) of the predicted GO term:
 
-IA-aware pooling: preserving rare/specific signal without destabilizing common terms
+- **Low IA (common terms):** mean across all 5 folds  
+- **Mid IA:** mean of the top-3 folds  
+- **High IA (rare/specific terms):** mean of the top-2 folds  
 
-To reduce washout while keeping common terms stable, we used IA-aware pooling. The key idea is to let the aggregation rule depend on term information content (IA), which correlates with rarity/specificity:
+This scheme reflects the empirical structure of the ensemble. Frequent terms typically show consistent support across multiple folds and therefore benefit from stable averaging, whereas rare or specific terms often appear in only one or two folds and would otherwise be suppressed by conventional aggregation.
 
-Low IA (common terms): use the mean over all 5 folds (stable consensus).
-
-Mid IA: use the mean over the top-3 folds (reduces dilution of partial support).
-
-High IA (rare/specific terms): use the mean over the top-2 folds (preserves strong fold-local evidence).
-
-Figure 3 links the aggregation choice directly to the empirical structure of the ensemble. The IA-stratified k-support (left) shows that fold support varies with term IA, while the single-fold analysis (right) demonstrates that sparse-support events are common and distributed across folds rather than being driven by a single outlier fold. IA-aware pooling exploits this structure: it retains robustness for low-IA, high-consensus terms while mitigating the systematic dilution that mean (and especially median) impose on higher-IA predictions.
+IA-aware pooling therefore preserves rare-term signal while maintaining robustness for common terms, providing a principled compromise between stability and sensitivity in the ensemble predictions.
 
 ### GO-DAG propagation
 GO terms are not independent labels: they live in a directed acyclic graph (DAG) where edges encode “is-a” / “part-of” relationships. In practice, if a protein is predicted with high confidence for a specific term, it is often reasonable—and biologically consistent—to assign some confidence to its ancestors (more general terms). I use this structure as a lightweight post-processing step: after aggregating model outputs (e.g., across folds), I propagate signal upward (child → parent) under controlled rules (depth, minimum score threshold, and propagation strength), which can improve ontology-consistency and sometimes recall while keeping precision under control.
