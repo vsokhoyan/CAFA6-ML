@@ -1,7 +1,11 @@
-## Transformer-Based Deep Learning for Protein Function Prediction: Experiments from the CAFA-6 Challenge
+<h2 align="center">
+Transformer-Based Deep Learning for Protein Function Prediction: Experiments from the CAFA-6 Challenge
+</h2>
 
-**Vahe Sokhoyan**  
+<p align="center">
+<strong>Vahe Sokhoyan</strong><br>
 March 2026
+</p>
 
 ## Overview
 
@@ -28,9 +32,10 @@ Fixed-embedding approaches using extracted ProtT5-XL and ESM2 representations we
 
 The Critical Assessment of Functional Annotation (CAFA-6) challenge evaluates computational methods for predicting protein function from amino-acid sequence. The dataset comprises approximately 82,000 training proteins with Gene Ontology (GO) annotations across three functional aspects: Molecular Function (MF), covering biochemical activities such as enzyme catalysis and binding; Biological Process (BP), covering biological pathways and systems-level functions, and Cellular Component (CC), covering subcellular localization. Performance is measured using the information accretion-weighted F-measure (Fmax), which accounts for both prediction accuracy and ontological specificity. Test evaluation is prospective, applied to proteins that were initially unannotated.
 
-![](figures/fig_cumulative_coverage_FPC_annotated.png){ width=55% }
-
-![](figures/fig_IA_vs_logpos_density_P_smoothed_white.png){ width=44% }
+<p align="center">
+  <img src="figures/fig_cumulative_coverage_FPC_annotated.png" width="55%">
+  <img src="figures/fig_IA_vs_logpos_density_P_smoothed_white.png" width="44%">
+</p>
 
 *Figure 1. Left: Cumulative annotation coverage versus retained terms (top-K). Right: Term specificity (IA) versus frequency.*
 
@@ -48,9 +53,10 @@ In the fixed-embedding configuration, protein sequences are first encoded by the
 
 ---
 
-![](figures/cafa6_architecture_fixed.png){ width=48% }
-
-![](figures/cafa6_prott5_finetuning.png){ width=50% }
+<p align="center">
+  <img src="figures/cafa6_architecture_fixed.png" width="48%">
+  <img src="figures/cafa6_prott5_finetuning.png" width="50%">
+</p>
 
 *Figure 2. Model architecture used for protein function prediction.  
 Left: multi-head prediction architecture operating in this example on fixed ProtT5 embeddings.  
@@ -58,13 +64,17 @@ Right: End-to-end fine-tuning scheme with the final transformer blocks of ProtT5
 
 A key architectural component is the asymmetric coupling between ontology heads shown in Fig. 2 (left). The predictions for MF and CC ontologies are fed into the BP ontology branch through learned projection layers. However, the reverse direction is blocked by a stop-gradient operation. Empirically, experiments (not included here) demonstrated that the BP ontology benefits from additional contextual information derived from MF and CC predictions, whereas introducing symmetric connections in several experiments degraded performance for MF and CC. This asymmetric design therefore reflects both the statistical structure of the dataset and the biological assumption that biological processes may often depend on molecular functions and cellular localization. Figure 3 shows the results for Fmax and AP for MF, BP, and CC for the fixed-embedding configuration, serving as a baseline for all subsequent experiments with the end-to-end transformer fine-tuning. In this setup, ProtT5 embeddings are computed once for each sequence and the classification heads are trained independently. Across all three ontologies the five folds show highly consistent training behavior, with only modest variance between folds. This indicates that the stratified taxonomy-based cross-validation provides reliable estimates of generalization performance.
 
-![](figures/grid_FPC__fmax_ap__perfold_plus_mean_fixed.png){ width=98% }
+<p align="center">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_fixed.png" width="98%">
+</p>
 
 *Figure 3. Validation performance for the fixed-embedding ProtT5 baseline across five cross-validation folds.  
 Top row: Fmax curves for MF, BP, and CC ontologies. Bottom row: Average Precision (AP).  
 Colored curves correspond to individual folds, while the dashed line indicates the mean performance across folds. The consistency between folds indicates stable optimization behavior and limited sensitivity to the specific fold split.*
 
-![](figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png){ width=98% }
+<p align="center">
+  <img src="figures/grid_FPC__fmax_ap__perfold_plus_mean_tuned.png" width="98%">
+</p>
 
 *Figure 4. Validation curves for the end-to-end tuned ProtT5 model with two transformer layers unfrozen.  
 Top row: Fmax. Bottom row: Average Precision.  
@@ -106,7 +116,9 @@ The same training protocol was applied to the end-to-end configuration with two 
 
 *Table 1: Setting used for the end-to-end Prott5-XL fine-tuning.*
 
-![](figures/Fixed_vs_tuned_FMax_AP.png){ width=98% }
+<p align="center">
+  <img src="figures/Fixed_vs_tuned_FMax_AP.png" width="98%">
+</p>
 
 *Figure 5. Comparison between fixed ProtT5 embeddings and end-to-end fine-tuning (two unfrozen transformer blocks) for Fmax and AP.*
 
@@ -118,7 +130,9 @@ A direct comparison between the fixed and tuned configurations is shown in Fig. 
 
 Although transformer fine-tuning is computationally expensive, additional experiments were performed at smaller batch sizes. Figure 6 shows the comparison again for Prott5 with 2 layers unfrozen and end-to-end fine-tuning as before and changing only the batch size. The smaller batches do provide comparably moderate systematic improvements in optimization dynamics for MF and CC, and larger differences at BP, suggesting that the practical constraints of fine-tuning large transformer models favor larger effective batch sizes in this configuration. Further fine-tuning of hyperparameters can be attempted, although heavy computational cost may limit the flexibility of such experiments.
 
-![](figures/prott5_batch_compare_grid.png){ width=98% }
+<p align="center">
+  <img src="figures/prott5_batch_compare_grid.png" width="98%">
+</p>
 
 *Figure 6. Influence of effective batch size on validation performance for the end-to-end ProtT5 configuration.  
 Smaller batch sizes tend to produce slightly higher validation metrics, although at the cost of longer training times and less efficient GPU utilization.*
@@ -129,7 +143,9 @@ Smaller batch sizes tend to produce slightly higher validation metrics, although
 
 To determine whether the observed improvement from end-to-end tuning depends strongly on the backbone architecture, additional experiments were performed using ESM2-small, which was trained with full end-to-end fine-tuning rather than partial unfreezing. Figure 7 shows the comparisons of the Prott5 and ESM2 (tr6 small) architectures with the fine-tuned and frozen layers.
 
-![](figures/Prott5_ESM2_nice_black.png){ width=98% }
+<p align="center">
+  <img src="figures/Prott5_ESM2_nice_black.png" width="98%">
+</p>
 
 *Figure 7. Comparison of fine-tuning strategies for ProtT5 and ESM2.  
 ProtT5 uses partial fine-tuning with two unfrozen layers, while ESM2 is trained end-to-end. Despite stronger relative improvements for ESM2 compared to its fixed-embedding baseline, ProtT5 still achieves higher absolute performance due to its stronger pretrained representation.*
@@ -138,7 +154,9 @@ The results shown in Fig. 8 indicate that for ESM2, end-to-end tuning produces a
 
 ---
 
-![](figures/ESM2_full.png){ width=98% }
+<p align="center">
+  <img src="figures/ESM2_full.png" width="98%">
+</p>
 
 *Figure 8. Fixed-embedding (blue) versus end-to-end tuning for the ESM2 model (orange) for Fmax and AP.*
 
@@ -163,11 +181,11 @@ The label-frequency distributions shown in Fig. 1 indicate that the BP ontology 
 
 This decomposition allows the learning dynamics of the rare-label regime to be analyzed independently of the dominant head region. The Fmax curves shown in Fig. 9 indicate that the global validation signal closely follows the behavior of the head region, which dominates the total number of annotations. In contrast, the rare-label tail continues to improve later in training, entering the diminishing-returns regime noticeably later than the main training body. Figure 10 shows a similar effect in the evolution of AP: While the head region approaches a plateau earlier, AP continues to improve over a longer training interval, particularly for the rare-label tail.
 
-![](figures/P_Fmax.png){ width=33% }
-
-![](figures/P_base_Fmax.png){ width=33% }
-
-![](figures/P_tail_Fmax.png){ width=33% }
+<p align="center">
+  <img src="figures/P_Fmax.png" width="33%">
+  <img src="figures/P_base_Fmax.png" width="33%">
+  <img src="figures/P_tail_Fmax.png" width="33%">
+</p>
 
 *Figure 9. Training dynamics of Fmax for the Biological Process ontology across five cross-validation folds.  
 Left: full evaluation across all analyzed labels.  
@@ -175,11 +193,11 @@ Center: head region (labels ranked 1–2000 by frequency).
 Right: tail region (labels 2000–3400).  
 Colored curves correspond to individual folds and the dashed line shows the mean across folds.*
 
-![](figures/P_AP.png){ width=33% }
-
-![](figures/P_base_AP.png){ width=33% }
-
-![](figures/P_tail_AP.png){ width=33% }
+<p align="center">
+  <img src="figures/P_AP.png" width="33%">
+  <img src="figures/P_base_AP.png" width="33%">
+  <img src="figures/P_tail_AP.png" width="33%">
+</p>
 
 *Figure 10. Training dynamics of Average Precision (AP) for the same three validation subsets of the P ontology.  
 Left: full evaluation.  
@@ -197,9 +215,10 @@ Standard ensemble aggregation by mean or median implicitly assumes consistent si
 
 The analysis reveals a strongly fold-sparse signal structure (Fig. 11). Single-fold firing patterns {0}…{4} occur nearly as frequently as full five-fold consensus {0,1,2,3,4}, indicating that a substantial fraction of valid predictions originates from localized evidence in only one or two folds. Sparse-support events are distributed across all fold indices and are not dominated by any single model instance. This sparsity has direct consequences for aggregation. Mean aggregation dilutes strong single-fold signals, while median aggregation is more restrictive still: with five folds it effectively requires three-fold consensus, suppressing most sparse-support events.
 
-![](figures/P_fold_combo_top12.png){ width=48% }
-
-![](figures/P_single_fold_by_IAband.png){ width=48% }
+<p align="center">
+  <img src="figures/P_fold_combo_top12.png" width="48%">
+  <img src="figures/P_single_fold_by_IAband.png" width="48%">
+</p>
 
 *Figure 11. Fold-support structure of P predictions passing the base gate in at least one fold.  
 Left: Most frequent (top 12) fold-combinations. Single-fold firing patterns {0}…{4} appear nearly as often as full five-fold agreement {0,1,2,3,4}, indicating that many events are supported by only one fold.  
@@ -224,9 +243,10 @@ The practical impact of different aggregation strategies was evaluated through d
 
 GO terms are not independent labels but are organized in a directed acyclic graph (DAG) encoding "is-a" and "part-of" relationships between terms of varying specificity. A confident prediction for a specific child term implies membership in all ancestor terms along the ontology path. This structure was exploited during post-processing. After ensemble aggregation, the predictions are propagated upward in the child-parent hierarchy under certain propagation depth, minimum score threshold, and propagation strength (skipped here for brevity). This improves ontological consistency and recall, while precision still needs to be monitored carefully. Figure 12 provides a qualitative illustration of the ontology structure underlying this propagation. In both examples, predicted center terms sit on short, biologically meaningful paths within the DAG, confirming that the "specific implies general" relationship encoded in the GO hierarchy produces plausible and interpretable ancestor assignments.
 
-![](figures/GODAG_CC_nice.png){ width=47% }
-
-![](figures/GODAG_MF_nice.png){ width=47% }
+<p align="center">
+  <img src="figures/GODAG_CC_nice.png" width="47%">
+  <img src="figures/GODAG_MF_nice.png" width="47%">
+</p>
 
 *Figure 12. GO-DAG neighborhood of two representative predicted terms. The arrows point from more specific child terms toward more general parent terms. Left (CC): a predicted cellular-component term shown together with nearby ancestors and descendants. Right (MF): molecular-function term connected to increasingly general DNA-binding ancestors.*
 
@@ -236,13 +256,16 @@ A reference-guided denoising step was attempted (after fold combination with IA-
 
 In combination with fold aggregation, a lightweight Meta-CatBoost classifier was used to produce a calibrated score. Within the probability band (0.20–0.60 for MF/CC), each predicted GO term was checked for UniProt/GOA support for that protein and the missing predictions were downscaled, with an optional hard veto if the downscaled score fell below the band edge. Predictions above a separate high-confidence skip threshold were not modified. On validation, this approach produces a distinct signature with significantly suppressed FP background in the targeted score region while the TP distribution remains comparatively stable (see Figs. 13–14).
 
-![](figures/Denoise1D.png){ width=100% }
+<p align="center">
+  <img src="figures/Denoise1D.png" width="100%">
+</p>
 
 *Figure 13. Score distributions of retained Top-M candidates (Meta-CatBoost probability > 0.20) showing True Positives (TP) and False Positives (FP) before and after UniProt/GOA-guided denoising, illustrated for the MF ontology. FP density is strongly suppressed at low-to-mid scores while the TP distribution remains comparatively stable.*
 
-![](figures/IA_vs_prob__FP__before__F__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png){ width=49% }
-
-![](figures/IA_vs_prob__FP__after__F__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png){ width=49% }
+<p align="center">
+  <img src="figures/IA_vs_prob__FP__before__F__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png" width="49%">
+  <img src="figures/IA_vs_prob__FP__after__F__GODAG__den1__band0.20-0.60__minp0.20__rows20000.png" width="49%">
+</p>
 
 *Figure 14. Term Information Accretion (IA) vs Meta-CatBoost probability. Left: before denoising, right: after UniProt/GOA-guided denoising. The denoising step removes a substantial portion of FP mass in the targeted probability regime, removing most of the structured IA-banded stripe patterns which are pronounced before denoising.*
 
