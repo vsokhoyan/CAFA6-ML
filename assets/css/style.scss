@@ -3,11 +3,40 @@
 
 @import "jekyll-theme-minimal";
 
-/* Page width and typography */
+/* Remove the narrow two-column layout */
 .wrapper {
-  max-width: 980px;
+  max-width: 1040px;
+  width: 100%;
+  margin: 0 auto;
 }
 
+/* Turn the default left sidebar/header into a normal top block */
+header {
+  float: none;
+  position: static;
+  width: auto;
+  margin: 0 0 1.5rem 0;
+  padding: 0;
+}
+
+/* Make the main article use the full width */
+section {
+  float: none;
+  width: auto;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Footer should also stop floating */
+footer {
+  float: none;
+  position: static;
+  width: auto;
+  margin-top: 2rem;
+}
+
+/* Page typography */
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 18px;
@@ -25,7 +54,7 @@ p {
   margin-bottom: 0.9em;
 }
 
-/* Headings: article-like */
+/* Headings */
 h1, h2, h3, h4 {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #111;
@@ -33,7 +62,7 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-  font-size: 2.0em;
+  font-size: 2em;
   margin-top: 1.6em;
   margin-bottom: 0.6em;
   border-bottom: 1px solid #ddd;
@@ -55,6 +84,8 @@ h3 {
 /* Images and captions */
 img {
   border-radius: 2px;
+  max-width: 100%;
+  height: auto;
 }
 
 p[align="center"] img {
@@ -104,4 +135,15 @@ h2[align="center"] {
 
 p[align="center"] strong {
   font-size: 1.02em;
+}
+
+/* Better mobile behavior */
+@media screen and (max-width: 960px) {
+  .wrapper {
+    max-width: 92%;
+  }
+
+  body {
+    font-size: 17px;
+  }
 }
