@@ -1,0 +1,107 @@
+---
+---
+
+@import "jekyll-theme-minimal";
+
+/* Page width and typography */
+.wrapper {
+  max-width: 980px;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 18px;
+  line-height: 1.72;
+  color: #222;
+  background: #fcfcfb;
+}
+
+p, li {
+  max-width: 860px;
+}
+
+p {
+  margin-top: 0.9em;
+  margin-bottom: 0.9em;
+}
+
+/* Headings: article-like */
+h1, h2, h3, h4 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #111;
+  letter-spacing: 0;
+}
+
+h1 {
+  font-size: 2.0em;
+  margin-top: 1.6em;
+  margin-bottom: 0.6em;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.2em;
+}
+
+h2 {
+  font-size: 1.45em;
+  margin-top: 1.4em;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+  margin-top: 1.2em;
+  margin-bottom: 0.4em;
+}
+
+/* Images and captions */
+img {
+  border-radius: 2px;
+}
+
+p[align="center"] img {
+  margin: 0 6px 8px 6px;
+}
+
+p[align="center"] em {
+  display: block;
+  max-width: 860px;
+  margin: 0.35em auto 1.3em auto;
+  font-size: 0.95em;
+  line-height: 1.45;
+  color: #444;
+}
+
+/* Tables */
+table {
+  margin: 1.2em auto;
+  border-collapse: collapse;
+  font-size: 0.96em;
+  width: auto;
+  max-width: 100%;
+}
+
+th, td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #f6f6f6;
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 2em 0;
+}
+
+/* Centered title block spacing */
+h2[align="center"] {
+  margin-top: 0.8em;
+  margin-bottom: 0.35em;
+  line-height: 1.25;
+}
+
+p[align="center"] strong {
+  font-size: 1.02em;
+}
