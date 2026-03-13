@@ -1,50 +1,40 @@
 ---
 ---
 
-@import "jekyll-theme-minimal";
-
-/* Remove the narrow two-column layout */
-.wrapper {
-  max-width: 1040px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Turn the default left sidebar/header into a normal top block */
-header {
-  float: none;
-  position: static;
-  width: auto;
-  margin: 0 0 1.5rem 0;
-  padding: 0;
-}
-
-/* Make the main article use the full width */
-section {
-  float: none;
-  width: auto;
-  border: none;
-  padding: 0;
+/* Full-width article layout without the theme sidebar */
+html, body {
   margin: 0;
+  padding: 0;
+  background: #fcfcfb;
+  color: #222;
 }
 
-/* Footer should also stop floating */
-footer {
-  float: none;
-  position: static;
-  width: auto;
-  margin-top: 2rem;
-}
-
-/* Page typography */
 body {
   font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 18px;
   line-height: 1.72;
-  color: #222;
-  background: #fcfcfb;
 }
 
+/* Main content container used by GitHub Pages markdown output */
+body > .container,
+body > .wrapper,
+.wrapper,
+section,
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 28px;
+  width: auto;
+  float: none !important;
+}
+
+/* Hide leftover theme-specific structural blocks if they appear */
+header,
+footer {
+  display: none !important;
+}
+
+/* Typography */
 p, li {
   max-width: 860px;
 }
@@ -54,7 +44,6 @@ p {
   margin-bottom: 0.9em;
 }
 
-/* Headings */
 h1, h2, h3, h4 {
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #111;
@@ -71,25 +60,33 @@ h1 {
 
 h2 {
   font-size: 1.45em;
-  margin-top: 1.4em;
+  margin-top: 1.35em;
   margin-bottom: 0.5em;
 }
 
 h3 {
   font-size: 1.2em;
-  margin-top: 1.2em;
+  margin-top: 1.15em;
   margin-bottom: 0.4em;
 }
 
-/* Images and captions */
+/* Title block */
+h2[align="center"] {
+  margin-top: 0.8em;
+  margin-bottom: 0.35em;
+  line-height: 1.25;
+}
+
+/* Figures */
 img {
-  border-radius: 2px;
   max-width: 100%;
   height: auto;
+  border-radius: 2px;
 }
 
 p[align="center"] img {
   margin: 0 6px 8px 6px;
+  vertical-align: top;
 }
 
 p[align="center"] em {
@@ -106,8 +103,8 @@ table {
   margin: 1.2em auto;
   border-collapse: collapse;
   font-size: 0.96em;
-  width: auto;
   max-width: 100%;
+  width: auto;
 }
 
 th, td {
@@ -119,31 +116,23 @@ th {
   background: #f6f6f6;
 }
 
-/* Horizontal rule */
 hr {
   border: none;
   border-top: 1px solid #ddd;
   margin: 2em 0;
 }
 
-/* Centered title block spacing */
-h2[align="center"] {
-  margin-top: 0.8em;
-  margin-bottom: 0.35em;
-  line-height: 1.25;
-}
-
-p[align="center"] strong {
-  font-size: 1.02em;
-}
-
-/* Better mobile behavior */
-@media screen and (max-width: 960px) {
-  .wrapper {
-    max-width: 92%;
-  }
-
+/* Mobile */
+@media screen and (max-width: 900px) {
   body {
     font-size: 17px;
+  }
+
+  body > .container,
+  body > .wrapper,
+  .wrapper,
+  section,
+  main {
+    padding: 0 16px;
   }
 }
