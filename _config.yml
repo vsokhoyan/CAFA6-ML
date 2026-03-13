@@ -1,3 +1,12 @@
-theme: minima
 title: "Transformer-Based Deep Learning for Protein Function Prediction"
-description: "Experiments from the CAFA-6 Challenge — Vahe Sokhoyan, March 2026"
+description: "Experiments from the CAFA-6 Challenge"
+author: "Vahe Sokhoyan"
+
+remote_theme: pages-themes/minimal@v0.2.0
+plugins:
+  - jekyll-remote-theme
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
